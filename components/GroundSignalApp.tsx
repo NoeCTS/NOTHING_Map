@@ -54,14 +54,14 @@ interface GroundSignalAppProps {
 
 const DEFAULT_LAYERS: Record<LocationCategory, boolean> = {
   retail: true,
-  galleries: true,
+  galleries: false,
   agencies: true,
   coworking: true,
-  venues: true,
-  schools: true,
+  venues: false,
+  schools: false,
   competitors: true,
   ubahn_poster: true,
-  ubahn_special: true,
+  ubahn_special: false,
   bridge_banner: true,
   street_furniture: true,
 };
@@ -76,7 +76,7 @@ export function GroundSignalApp({
   const { locations, meta, neighbourhoods } = market;
   const [activeMode, setActiveMode] = useState<ModeId>("guerrilla");
   const [visibleLayers, setVisibleLayers] = useState(DEFAULT_LAYERS);
-  const [heatmapEnabled, setHeatmapEnabled] = useState(false);
+  const [heatmapEnabled, setHeatmapEnabled] = useState(true);
   const [radiusOverlay, setRadiusOverlay] = useState(false);
   const [gapAnalysisEnabled, setGapAnalysisEnabled] = useState(false);
   const [markersVisible, setMarkersVisible] = useState(true);

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import {
   LocationCategory,
   LocationsData,
@@ -53,6 +56,12 @@ export function Controls({
   onToggleMarkers,
   onToggleRadiusOverlay,
 }: ControlsProps) {
+  const [expandedSections, setExpandedSections] = useState({
+    mode: true,
+    layers: false,
+    ooh: false,
+    visualization: false,
+  });
   const totalNodes = Object.values(locations).reduce((sum, arr) => sum + arr.length, 0);
   const layerConfig = getLayerConfig(market);
   const modes = getModes(market);
@@ -67,14 +76,24 @@ export function Controls({
   const areBaseLayersEnabled = baseLayers.every((layer) => visibleLayers[layer.id]);
   const areOohLayersEnabled = oohLayers.every((layer) => visibleLayers[layer.id]);
 
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
   return (
     <aside className="controls-panel">
       <section className="controls-section">
-        <div className="section-header">
+        <button
+          className="section-header section-header-toggle"
+          onClick={() => toggleSection("mode")}
+          type="button"
+        >
           <span className="section-header-dot" />
           <span className="section-kicker">Mode</span>
-        </div>
-        <div className="mode-pills">
+          <span className={`section-chevron ${expandedSections.mode ? "expanded" : ""}`} />
+        </button>
+        <div className={`section-content ${expandedSections.mode ? "expanded" : ""}`}>
+          <div className="mode-pills">
           {modes.map((mode) => {
             const isActive = mode.id === activeMode;
             const shortLabel = mode.id === "cultural" ? "Cultural"
@@ -93,15 +112,21 @@ export function Controls({
               </button>
             );
           })}
+          </div>
         </div>
       </section>
 
       <section className="controls-section">
         <div className="section-header-right">
-          <div className="section-header">
+          <button
+            className="section-header section-header-toggle"
+            onClick={() => toggleSection("layers")}
+            type="button"
+          >
             <span className="section-header-dot" />
             <span className="section-kicker">Data Layers</span>
-          </div>
+            <span className={`section-chevron ${expandedSections.layers ? "expanded" : ""}`} />
+          </button>
           <div className="section-header-tools">
             <button
               className="segment-toggle-btn"
@@ -118,7 +143,8 @@ export function Controls({
             <span className="section-node-count">{String(totalNodes).padStart(5, "0")} NODES</span>
           </div>
         </div>
-        <div className="layer-stack">
+        <div className={`section-content ${expandedSections.layers ? "expanded" : ""}`}>
+          <div className="layer-stack">
           {baseLayers.map((layer) => {
             const style = LAYER_STYLE[layer.color] ?? LAYER_STYLE.grey;
             return (
@@ -139,15 +165,21 @@ export function Controls({
               </label>
             );
           })}
+          </div>
         </div>
       </section>
 
       <section className="controls-section">
         <div className="section-header-right">
-          <div className="section-header">
+          <button
+            className="section-header section-header-toggle"
+            onClick={() => toggleSection("ooh")}
+            type="button"
+          >
             <span className="section-header-dot" />
             <span className="section-kicker">OOH Media</span>
-          </div>
+            <span className={`section-chevron ${expandedSections.ooh ? "expanded" : ""}`} />
+          </button>
           <div className="section-header-tools">
             <button
               className="segment-toggle-btn"
@@ -166,63 +198,72 @@ export function Controls({
             </span>
           </div>
         </div>
-        <div className="layer-stack">
-          {oohLayers.map((layer) => {
-            const style = LAYER_STYLE[layer.color] ?? LAYER_STYLE.grey;
-            return (
-              <label key={layer.id} className="layer-row">
-                <div className="layer-row-left">
-                  <div className={`layer-checkbox ${style.checkboxClass}`}>
-                    <input
-                      checked={visibleLayers[layer.id]}
-                      onChange={() => onToggleLayer(layer.id)}
-                      type="checkbox"
-                    />
-                    <div className="layer-checkbox-box" />
-                    <div className="layer-checkbox-inner" />
+        <div className={`section-content ${expandedSections.ooh ? "expanded" : ""}`}>
+          <div className="layer-stack">
+            {oohLayers.map((layer) => {
+              const style = LAYER_STYLE[layer.color] ?? LAYER_STYLE.grey;
+              return (
+                <label key={layer.id} className="layer-row">
+                  <div className="layer-row-left">
+                    <div className={`layer-checkbox ${style.checkboxClass}`}>
+                      <input
+                        checked={visibleLayers[layer.id]}
+                        onChange={() => onToggleLayer(layer.id)}
+                        type="checkbox"
+                      />
+                      <div className="layer-checkbox-box" />
+                      <div className="layer-checkbox-inner" />
+                    </div>
+                    <span className="layer-label">{layer.label}</span>
                   </div>
-                  <span className="layer-label">{layer.label}</span>
-                </div>
-                <span className="layer-count">{String(locations[layer.id].length).padStart(4, "0")}</span>
-              </label>
-            );
-          })}
+                  <span className="layer-count">{String(locations[layer.id].length).padStart(4, "0")}</span>
+                </label>
+              );
+            })}
+          </div>
         </div>
       </section>
 
       <section className="controls-section">
         <div className="section-header-right">
-          <div className="section-header">
+          <button
+            className="section-header section-header-toggle"
+            onClick={() => toggleSection("visualization")}
+            type="button"
+          >
             <span className="section-header-dot" />
             <span className="section-kicker">Visualization</span>
-          </div>
+            <span className={`section-chevron ${expandedSections.visualization ? "expanded" : ""}`} />
+          </button>
           <span className="section-node-count">004 TOGGLES</span>
         </div>
-        <div className="layer-stack">
-          <VisualizationToggle
-            active={heatmapEnabled}
-            checkboxClass="accent"
-            label="Density Heatmap"
-            onToggle={onToggleHeatmap}
-          />
-          <VisualizationToggle
-            active={!markersVisible}
-            checkboxClass="white"
-            label="Hide Markers"
-            onToggle={onToggleMarkers}
-          />
-          <VisualizationToggle
-            active={radiusOverlay}
-            checkboxClass="white"
-            label="Conversion Radius"
-            onToggle={onToggleRadiusOverlay}
-          />
-          <VisualizationToggle
-            active={gapAnalysisEnabled}
-            checkboxClass="grey"
-            label="Gap Analysis"
-            onToggle={onToggleGapAnalysis}
-          />
+        <div className={`section-content ${expandedSections.visualization ? "expanded" : ""}`}>
+          <div className="layer-stack">
+            <VisualizationToggle
+              active={heatmapEnabled}
+              checkboxClass="accent"
+              label="Density Heatmap"
+              onToggle={onToggleHeatmap}
+            />
+            <VisualizationToggle
+              active={!markersVisible}
+              checkboxClass="white"
+              label="Hide Markers"
+              onToggle={onToggleMarkers}
+            />
+            <VisualizationToggle
+              active={radiusOverlay}
+              checkboxClass="white"
+              label="Conversion Radius"
+              onToggle={onToggleRadiusOverlay}
+            />
+            <VisualizationToggle
+              active={gapAnalysisEnabled}
+              checkboxClass="grey"
+              label="Gap Analysis"
+              onToggle={onToggleGapAnalysis}
+            />
+          </div>
         </div>
       </section>
 
