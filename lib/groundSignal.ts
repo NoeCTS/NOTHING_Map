@@ -1,19 +1,23 @@
 import {
   BreakdownMetric,
   BrandFit,
+  ConfidenceLevel,
+  ImpressionRange,
   LocationCategory,
   LocationPoint,
   LocationsData,
+  MarketMeta,
   ModeId,
   Neighbourhood,
   NeighbourhoodImpressions,
   NeighbourhoodStats,
   OOHCategory,
   Recommendation,
+  RecommendationMetric,
 } from "@/components/types";
-import { TRANSIT_DEFAULTS, TRANSIT_WEIGHTS } from "@/data/transit_weights";
+import { polygonBounds, resolvePointZone } from "@/lib/spatial";
 
-export const MODES: { id: ModeId; label: string; blurb: string }[] = [
+const BASE_MODES: { id: ModeId; label: string; blurb: string }[] = [
   {
     id: "cultural",
     label: "Cultural Launchpad",
@@ -37,28 +41,74 @@ export const MODES: { id: ModeId; label: string; blurb: string }[] = [
   {
     id: "ooh",
     label: "OOH Media",
-    blurb: "Maps 5,000+ out-of-home surfaces: U-Bahn posters, track billboards, bridge banners, street furniture.",
+    blurb: "",
   },
 ];
 
-export const LAYER_CONFIG: {
+const BASE_LAYER_CONFIG: {
   id: LocationCategory;
   label: string;
   color: "accent" | "white" | "grey" | "orange" | "cyan" | "yellow" | "magenta" | "lime";
 }[] = [
-  { id: "retail", label: "Retail Partners", color: "accent" },
+  { id: "retail", label: "Retail", color: "accent" },
   { id: "galleries", label: "Galleries", color: "white" },
-  { id: "agencies", label: "Creative Agencies", color: "white" },
-  { id: "coworking", label: "Coworking Spaces", color: "grey" },
-  { id: "venues", label: "Music Venues", color: "grey" },
+  { id: "agencies", label: "Agencies", color: "white" },
+  { id: "coworking", label: "Coworking", color: "grey" },
+  { id: "venues", label: "Venues", color: "grey" },
   { id: "schools", label: "Design Schools", color: "grey" },
-  { id: "ubahn_poster", label: "U-Bahn Posters", color: "orange" },
-  { id: "ubahn_special", label: "U-Bahn Premium", color: "magenta" },
-  { id: "bridge_banner", label: "Bridge Banners", color: "cyan" },
+  { id: "ubahn_poster", label: "Posters", color: "orange" },
+  { id: "ubahn_special", label: "Premium", color: "magenta" },
+  { id: "bridge_banner", label: "Bridge", color: "cyan" },
   { id: "street_furniture", label: "Street Furniture", color: "lime" },
 ];
 
-export const OOH_CATEGORIES: OOHCategory[] = ["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"];
+export const OOH_CATEGORIES: OOHCategory[] = [
+  "ubahn_poster",
+  "ubahn_special",
+  "bridge_banner",
+  "street_furniture",
+];
+
+export function getModes(market: MarketMeta) {
+  return BASE_MODES.map((mode) =>
+    mode.id === "ooh"
+      ? {
+          ...mode,
+          blurb: market.oohModeBlurb,
+        }
+      : mode,
+  );
+}
+
+export function getLayerConfig(market: MarketMeta) {
+  return BASE_LAYER_CONFIG.map((layer) => {
+    if (layer.id === "retail") {
+      return { ...layer, label: market.retailLabel };
+    }
+    if (layer.id === "agencies") {
+      return { ...layer, label: market.agenciesLabel };
+    }
+    if (layer.id === "venues") {
+      return { ...layer, label: market.venuesLabel };
+    }
+    if (layer.id === "ubahn_poster") {
+      return { ...layer, label: market.oohLabels.ubahn_poster };
+    }
+    if (layer.id === "ubahn_special") {
+      return { ...layer, label: market.oohLabels.ubahn_special };
+    }
+    if (layer.id === "bridge_banner") {
+      return { ...layer, label: market.oohLabels.bridge_banner };
+    }
+    if (layer.id === "street_furniture") {
+      return { ...layer, label: market.oohLabels.street_furniture };
+    }
+    if (layer.id === "coworking" && market.code === "LDN") {
+      return { ...layer, label: "Workspaces + Third Places" };
+    }
+    return layer;
+  });
+}
 
 export const MODE_WEIGHTS: Record<ModeId, Partial<Record<LocationCategory, number>>> = {
   cultural: {
@@ -91,39 +141,81 @@ export const MODE_WEIGHTS: Record<ModeId, Partial<Record<LocationCategory, numbe
   },
 };
 
-interface ZoneDynamicStats {
-  stats: NeighbourhoodStats;
+export interface ZoneQualityCounters {
+  defaultImpressions: number;
+  geometryInferred: number;
+  geometryVerified: number;
+  polygonMismatches: number;
+  stationWeighted: number;
+  taggedFallback: number;
+  visiblePoints: number;
+}
+
+export interface ZoneDynamicStats {
   impressions: NeighbourhoodImpressions;
+  quality: ZoneQualityCounters;
+  stats: NeighbourhoodStats;
+}
+
+interface ImpressionDetails {
+  confidence: ConfidenceLevel;
+  contextMultiplier: number;
+  formatMultiplier: number;
+  high: number;
+  low: number;
+  stationMatched: boolean;
+  value: number;
 }
 
 const ACTIVATIONS: Record<ModeId, string> = {
   cultural:
-    "Pop-up in gallery space + wheat-paste poster campaign + Glyph projection event",
+    "Pop-up in gallery space + fly-poster burst + Glyph projection moment",
   retail:
-    "Endcap display programme in Saturn/MediaMarkt + staff training with community intelligence signals + in-store Nothing experience zone",
+    "Retail window and endcap programme across priority anchors + staff seeding + in-store Nothing experience zone",
   creator:
-    "Seed product to 20 local creators in design, architecture, and lifestyle + host creator dinner at coworking space + launch Berlin-specific Community Edition",
+    "Seed product to 20 local creators in design, architecture, and lifestyle + host a creator dinner in-zone + launch a market-specific Community Edition",
   guerrilla:
-    "Wheat-paste campaign across 50+ locations + U-Bahn takeover + Glyph projections on buildings + limited drop at music venues",
+    "Fly-posting across nightlife corridors + transit-and-street takeover + Glyph projections + limited product drop at venues",
   ooh:
-    "Takeover U-Bahn poster + premium placements in highest-density stations + bridge banner blitz across Kreuzberg/Friedrichshain corridors + street furniture branding at key transit nodes + coordinate with retail partners for in-store echo",
+    "Take over transit posters, digital screens, large-format roadside sites, and street furniture across priority zones, then echo into retail anchors for conversion",
 };
 
-export const KPI_LIST = [
-  "Branded search uplift (Google Trends DE, Berlin versus control city)",
-  "Retail footfall and sell-through (Saturn/MediaMarkt data)",
-  "Social mentions (#NothingBerlin)",
-  "CRM capture (email/SMS opt-in from QR codes)",
-  "Creator content engagement (view-through rate, saves)",
-];
+function budgetTiers(market: MarketMeta): Record<ModeId, string> {
+  const currency = market.code === "BER" ? "EUR" : "GBP";
+  return {
+    cultural: `Tier 2 / ${currency} ${market.code === "BER" ? "80K-160K" : "70K-150K"}`,
+    retail: `Tier 2 / ${currency} ${market.code === "BER" ? "100K-180K" : "90K-170K"}`,
+    creator: `Tier 1 / ${currency} ${market.code === "BER" ? "60K-120K" : "55K-110K"}`,
+    guerrilla: `Tier 2 / ${currency} ${market.code === "BER" ? "90K-170K" : "80K-160K"}`,
+    ooh: `Tier 3 / ${currency} ${market.code === "BER" ? "220K-420K" : "200K-380K"}`,
+  };
+}
 
-const OOH_KPI_LIST = [
-  "OOH impression estimates (U-Bahn station footfall data)",
-  "Branded search uplift (Google Trends DE, Berlin versus control city)",
-  "QR code scan-through rate (street furniture + bridge banner placements)",
-  "Retail footfall uplift within 500m of OOH placements",
-  "Social mentions (#NothingBerlin, geo-tagged posts near placements)",
-];
+function kpiList(market: MarketMeta) {
+  return [
+    `Branded search uplift (Google Trends ${market.searchRegion}, ${market.city} versus control city)`,
+    market.code === "BER"
+      ? "Retail footfall and sell-through (Saturn/MediaMarkt data)"
+      : "Retail footfall and sell-through at priority anchors",
+    `Social mentions (${market.hashtag})`,
+    "CRM capture (email/SMS opt-in from QR codes)",
+    "Creator content engagement (view-through rate, saves)",
+  ];
+}
+
+function oohKpiList(market: MarketMeta) {
+  return [
+    market.code === "BER"
+      ? "OOH impression estimates (U-Bahn station footfall data)"
+      : "OOH impression estimates (flagship screen weighting + format defaults)",
+    `Branded search uplift (Google Trends ${market.searchRegion}, ${market.city} versus control city)`,
+    market.code === "BER"
+      ? "QR code scan-through rate (street furniture + bridge banner placements)"
+      : "QR code scan-through rate (street furniture + large-format placements)",
+    "Retail footfall uplift within 500m of OOH placements",
+    `Social mentions (${market.hashtag}, geo-tagged posts near placements)`,
+  ];
+}
 
 const OOH_METRIC_CAPS = {
   total: 12_000_000,
@@ -131,6 +223,13 @@ const OOH_METRIC_CAPS = {
   ubahn_special: 6_000_000,
   bridge_banner: 1_200_000,
   street_furniture: 2_000_000,
+};
+
+const OOH_CATEGORY_LIMITS: Record<OOHCategory, { max: number; min: number }> = {
+  ubahn_poster: { min: 6_000, max: 85_000 },
+  ubahn_special: { min: 8_000, max: 180_000 },
+  bridge_banner: { min: 18_000, max: 140_000 },
+  street_furniture: { min: 5_000, max: 65_000 },
 };
 
 const IMPRESSION_FORMATTER = new Intl.NumberFormat("en", {
@@ -151,18 +250,23 @@ export function rankNeighbourhoods(
   );
 }
 
+export function categoryLabel(category: LocationCategory, market: MarketMeta) {
+  return getLayerConfig(market).find((layer) => layer.id === category)?.label ?? category;
+}
+
 export function computeDynamicStats(
   neighbourhoods: Neighbourhood[],
   locations: LocationsData,
   visibleLayers: Record<LocationCategory, boolean>,
+  market: MarketMeta,
 ): Record<string, ZoneDynamicStats> {
-  const zoneNames = new Set(neighbourhoods.map((zone) => zone.name));
   const byZone = Object.fromEntries(
     neighbourhoods.map((zone) => [
       zone.name,
       {
         stats: createEmptyStats(),
         impressions: createEmptyImpressions(),
+        quality: createEmptyQualityCounters(),
       },
     ]),
   ) as Record<string, ZoneDynamicStats>;
@@ -176,17 +280,39 @@ export function computeDynamicStats(
     }
 
     for (const point of layerPoints) {
-      if (!point.area || !zoneNames.has(point.area)) {
+      const assignment = resolvePointZone(point, neighbourhoods);
+
+      if (!assignment.zoneName) {
         continue;
       }
 
-      const zoneBucket = byZone[point.area];
+      const zoneBucket = byZone[assignment.zoneName];
       zoneBucket.stats[category] += 1;
+      zoneBucket.quality.visiblePoints += 1;
+
+      if (assignment.method === "polygon_verified") {
+        zoneBucket.quality.geometryVerified += 1;
+      } else if (assignment.method === "polygon_inferred") {
+        zoneBucket.quality.geometryInferred += 1;
+      } else if (assignment.method === "tagged_fallback") {
+        zoneBucket.quality.taggedFallback += 1;
+      } else if (assignment.method === "tagged_mismatch") {
+        zoneBucket.quality.taggedFallback += 1;
+        zoneBucket.quality.polygonMismatches += 1;
+      }
 
       if (isOohCategory(category)) {
-        const impressions = getImpressions(point, category);
-        zoneBucket.impressions[category] += impressions;
-        zoneBucket.impressions.total += impressions;
+        const impressionDetails = getImpressionDetails(point, category, market);
+        zoneBucket.impressions[category] += impressionDetails.value;
+        zoneBucket.impressions.low += impressionDetails.low;
+        zoneBucket.impressions.high += impressionDetails.high;
+        zoneBucket.impressions.total += impressionDetails.value;
+
+        if (impressionDetails.stationMatched) {
+          zoneBucket.quality.stationWeighted += 1;
+        } else {
+          zoneBucket.quality.defaultImpressions += 1;
+        }
       }
     }
   }
@@ -237,24 +363,19 @@ export function brandFitValue(brandFit: BrandFit) {
   }
 }
 
-export function getImpressions(point: LocationPoint, category: LocationCategory): number {
+export function getImpressions(point: LocationPoint, category: LocationCategory, market: MarketMeta): number {
   if (!isOohCategory(category)) {
     return 0;
   }
 
-  const lookupKey = extractTransitNodeKey(point.name);
-  if (lookupKey && TRANSIT_WEIGHTS[lookupKey]) {
-    return TRANSIT_WEIGHTS[lookupKey];
-  }
-
-  return TRANSIT_DEFAULTS[category];
+  return getImpressionDetails(point, category, market).value;
 }
 
 export function formatImpressions(value: number) {
   return IMPRESSION_FORMATTER.format(value).toUpperCase();
 }
 
-export function getBreakdown(zone: Neighbourhood, mode?: ModeId): BreakdownMetric[] {
+export function getBreakdown(zone: Neighbourhood, market: MarketMeta, mode?: ModeId): BreakdownMetric[] {
   if (mode === "ooh") {
     const impressions = zone.impressions ?? createEmptyImpressions();
     return [
@@ -264,17 +385,17 @@ export function getBreakdown(zone: Neighbourhood, mode?: ModeId): BreakdownMetri
         displayValue: formatImpressions(impressions.total),
       },
       {
-        label: "U-Bahn posters",
+        label: market.oohLabels.ubahn_poster,
         value: metricPercent(impressions.ubahn_poster, OOH_METRIC_CAPS.ubahn_poster),
         displayValue: formatImpressions(impressions.ubahn_poster),
       },
       {
-        label: "U-Bahn premium",
+        label: market.oohLabels.ubahn_special,
         value: metricPercent(impressions.ubahn_special, OOH_METRIC_CAPS.ubahn_special),
         displayValue: formatImpressions(impressions.ubahn_special),
       },
       {
-        label: "Street + bridge",
+        label: "Street + large format",
         value: metricPercent(
           impressions.bridge_banner + impressions.street_furniture,
           OOH_METRIC_CAPS.bridge_banner + OOH_METRIC_CAPS.street_furniture,
@@ -316,16 +437,20 @@ export function getBreakdown(zone: Neighbourhood, mode?: ModeId): BreakdownMetri
   ];
 }
 
-export function recommendationWhy(zone: Neighbourhood, mode: ModeId) {
+export function recommendationWhy(zone: Neighbourhood, mode: ModeId, market: MarketMeta) {
   const stats = zone.stats;
 
   if (mode === "ooh") {
-    const totalOoh = stats.ubahn_poster + stats.ubahn_special + stats.bridge_banner + stats.street_furniture;
+    const totalOoh =
+      stats.ubahn_poster +
+      stats.ubahn_special +
+      stats.bridge_banner +
+      stats.street_furniture;
     const estimatedReach = formatImpressions(zone.impressions?.total ?? 0);
     return [
       zone.description.split(". ")[0] + ".",
-      `${totalOoh} OOH surfaces drive roughly ${estimatedReach} daily impressions, led by ${stats.ubahn_poster} U-Bahn poster slots, ${stats.ubahn_special} premium formats, ${stats.bridge_banner} bridge banners, and ${stats.street_furniture} street furniture placements.`,
-      `Pairing that media weight with ${stats.retail} retail touchpoint${stats.retail === 1 ? "" : "s"} creates a clear awareness-to-conversion corridor.`,
+      `${totalOoh} OOH surfaces drive roughly ${estimatedReach} daily impressions, led by ${stats.ubahn_poster} ${market.oohLabels.ubahn_poster.toLowerCase()}, ${stats.ubahn_special} ${market.oohLabels.ubahn_special.toLowerCase()}, ${stats.bridge_banner} ${market.oohLabels.bridge_banner.toLowerCase()}, and ${stats.street_furniture} ${market.oohLabels.street_furniture.toLowerCase()}.`,
+      `Pairing that media weight with ${stats.retail} retail anchor${stats.retail === 1 ? "" : "s"} creates a clear awareness-to-conversion corridor.`,
     ];
   }
 
@@ -334,13 +459,13 @@ export function recommendationWhy(zone: Neighbourhood, mode: ModeId) {
       return [
         zone.description.split(". ")[0] + ".",
         `${stats.galleries} galleries, ${stats.venues} music venues, and ${stats.agencies} creative agencies create the strongest cultural stack in-zone.`,
-        `${stats.retail} retail partner${stats.retail === 1 ? "" : "s"} sit within reach for conversion once awareness spikes.`,
+        `${stats.retail} retail anchor${stats.retail === 1 ? "" : "s"} sit within reach for conversion once awareness spikes.`,
       ];
     case "retail":
       return [
         zone.description.split(". ")[0] + ".",
-        `${stats.retail} retail touchpoint${stats.retail === 1 ? "" : "s"} plus ${stats.galleries} galleries give this zone the cleanest mix of visibility and brand context.`,
-        `The area supports flagship moments while still linking directly to Saturn and MediaMarkt sell-through.`,
+        `${stats.retail} retail anchor${stats.retail === 1 ? "" : "s"} plus ${stats.galleries} galleries give this zone the cleanest mix of visibility and brand context.`,
+        "The area supports flagship moments while still linking directly to high-traffic retail conversion.",
       ];
     case "creator":
       return [
@@ -359,11 +484,149 @@ export function recommendationWhy(zone: Neighbourhood, mode: ModeId) {
   }
 }
 
+export function estimateZoneImpressionRange(zone: Neighbourhood): ImpressionRange | null {
+  const expected = zone.impressions?.total ?? 0;
+  if (expected <= 0) {
+    return null;
+  }
+
+  const explicitLow = zone.impressions?.low ?? 0;
+  const explicitHigh = zone.impressions?.high ?? 0;
+  if (explicitLow > 0 && explicitHigh > 0) {
+    return {
+      confidence: zone.dataQuality?.level ?? "medium",
+      expected,
+      low: explicitLow,
+      high: explicitHigh,
+    };
+  }
+
+  const quality = zone.dataQuality;
+  const sourceCount = (quality?.stationWeighted ?? 0) + (quality?.defaultImpressions ?? 0);
+  const stationShare = sourceCount > 0 ? (quality?.stationWeighted ?? 0) / sourceCount : 0;
+
+  let lowFactor = 0.74;
+  let highFactor = 1.28;
+  let confidence: ConfidenceLevel = quality?.level ?? "medium";
+
+  if (confidence === "high") {
+    lowFactor = 0.84;
+    highFactor = 1.16;
+  } else if (confidence === "low") {
+    lowFactor = 0.6;
+    highFactor = 1.46;
+  }
+
+  lowFactor += stationShare * 0.06;
+  highFactor -= stationShare * 0.08;
+
+  return {
+    confidence,
+    expected,
+    low: Math.round(expected * lowFactor),
+    high: Math.round(expected * highFactor),
+  };
+}
+
+function buildRecommendationMetrics(
+  zone: Neighbourhood,
+  mode: ModeId,
+  market: MarketMeta,
+): RecommendationMetric[] {
+  const metrics: RecommendationMetric[] = [
+    {
+      label: "Mode score",
+      value: `${scoreForMode(zone, mode)}/100`,
+    },
+    {
+      label: "Brand fit",
+      value: zone.brandFit.toUpperCase(),
+    },
+  ];
+
+  if (mode === "ooh") {
+    const impressionRange = estimateZoneImpressionRange(zone);
+    metrics.push(
+      {
+        label: "Daily reach",
+        value: formatImpressions(zone.impressions?.total ?? 0),
+      },
+      {
+        label: "Range",
+        value: impressionRange
+          ? `${formatImpressions(impressionRange.low)}-${formatImpressions(impressionRange.high)}`
+          : "N/A",
+      },
+      {
+        label: market.oohLabels.ubahn_special,
+        value: String(zone.stats.ubahn_special),
+      },
+      {
+        label: "Retail anchors",
+        value: String(zone.stats.retail),
+      },
+    );
+    return metrics;
+  }
+
+  const breakdown = getBreakdown(zone, market, mode);
+  metrics.push(
+    {
+      label: breakdown[0]?.label ?? "Creative density",
+      value: `${breakdown[0]?.value ?? 0}/100`,
+    },
+    {
+      label: breakdown[1]?.label ?? "Retail proximity",
+      value: `${breakdown[1]?.value ?? 0}/100`,
+    },
+    {
+      label: "OOH support",
+      value: zone.impressions?.total ? formatImpressions(zone.impressions.total) : "Light",
+    },
+    {
+      label: "Gap status",
+      value: zone.gapAnalysis?.status.toUpperCase() ?? "N/A",
+    },
+  );
+
+  return metrics;
+}
+
+function buildRecommendationAssumptions(
+  zone: Neighbourhood,
+  mode: ModeId,
+  market: MarketMeta,
+): string[] {
+  const assumptions = [
+    "Zone scores reflect only currently visible layers.",
+    `Geometry uses ${zone.dataQuality?.geometryVerified ?? 0} polygon-verified and ${zone.dataQuality?.geometryInferred ?? 0} polygon-inferred points.`,
+  ];
+
+  if (mode === "ooh") {
+    assumptions.push(
+      `Impressions blend named site weights with format multipliers; ${zone.dataQuality?.stationWeighted ?? 0} placements use explicit site weights and ${zone.dataQuality?.defaultImpressions ?? 0} use market defaults.`,
+    );
+    assumptions.push(
+      market.code === "LDN"
+        ? "Planning-proxy OOH rows are treated with wider uncertainty bands than named operator or station-linked surfaces."
+        : "Unmatched OOH surfaces fall back to category defaults and therefore carry wider uncertainty than named transit nodes.",
+    );
+  } else {
+    assumptions.push(
+      "Retail conversion support is directional and based on curated anchors rather than full commercial inventory coverage.",
+    );
+  }
+
+  return assumptions;
+}
+
 export function buildRecommendation(
   mode: ModeId,
   ranked: Neighbourhood[],
+  market: MarketMeta,
+  focusZone?: Neighbourhood,
 ): Recommendation | null {
-  const topZone = ranked[0];
+  const topZone = focusZone ?? ranked[0];
 
   if (!topZone) {
     return null;
@@ -371,13 +634,19 @@ export function buildRecommendation(
 
   return {
     zone: topZone.name,
-    why: recommendationWhy(topZone, mode),
+    why: recommendationWhy(topZone, mode, market),
     activation: ACTIVATIONS[mode],
-    kpis: mode === "ooh" ? OOH_KPI_LIST : KPI_LIST,
+    kpis: mode === "ooh" ? oohKpiList(market) : kpiList(market),
+    budget: budgetTiers(market)[mode],
+    impressionRange: mode === "ooh" ? estimateZoneImpressionRange(topZone) ?? undefined : undefined,
+    metrics: buildRecommendationMetrics(topZone, mode, market),
+    risks: recommendationRisks(topZone, mode, market),
+    assumptions: buildRecommendationAssumptions(topZone, mode, market),
+    nextStep: recommendationNextStep(topZone, mode, market),
   };
 }
 
-export function summaryLine(zone: Neighbourhood, mode: ModeId) {
+export function summaryLine(zone: Neighbourhood, mode: ModeId, market: MarketMeta) {
   const { stats, brandFit } = zone;
 
   switch (mode) {
@@ -390,11 +659,15 @@ export function summaryLine(zone: Neighbourhood, mode: ModeId) {
     case "guerrilla":
       return `${stats.venues} music venues · ${stats.schools} schools · high footfall`;
     case "ooh": {
-      const total = stats.ubahn_poster + stats.ubahn_special + stats.bridge_banner + stats.street_furniture;
+      const total =
+        stats.ubahn_poster +
+        stats.ubahn_special +
+        stats.bridge_banner +
+        stats.street_furniture;
       const estimatedReach = zone.impressions?.total
         ? `${formatImpressions(zone.impressions.total)} reach`
         : `${total} OOH`;
-      return `${estimatedReach} · ${stats.ubahn_poster + stats.ubahn_special} U-Bahn · ${stats.bridge_banner} bridge · ${stats.street_furniture} street`;
+      return `${estimatedReach} · ${stats.ubahn_poster + stats.ubahn_special} ${market.code === "BER" ? "U-Bahn" : "transit + digital"} · ${stats.bridge_banner} ${market.code === "BER" ? "bridge" : "large format"} · ${stats.street_furniture} street`;
     }
     default:
       return `${stats.galleries} galleries · ${stats.retail} retail`;
@@ -402,7 +675,7 @@ export function summaryLine(zone: Neighbourhood, mode: ModeId) {
 }
 
 export function modeLabel(mode: ModeId) {
-  return MODES.find((item) => item.id === mode)?.label ?? mode;
+  return BASE_MODES.find((item) => item.id === mode)?.label ?? mode;
 }
 
 export function heatOpacity(score: number) {
@@ -413,16 +686,15 @@ export function isOohCategory(category: LocationCategory): category is OOHCatego
   return OOH_CATEGORIES.includes(category as OOHCategory);
 }
 
-/**
- * Compute dynamic bounds for a neighbourhood based on which layers are visible.
- * Collects all visible points that belong to the zone and returns a tight bounding box.
- * Falls back to the static bounds if no visible points exist.
- */
 export function computeDynamicBounds(
   zone: Neighbourhood,
   locations: LocationsData,
   visibleLayers: Record<LocationCategory, boolean>,
 ): [[number, number], [number, number]] {
+  if (zone.polygon?.length) {
+    return polygonBounds(zone.polygon);
+  }
+
   const points: { lat: number; lng: number }[] = [];
 
   for (const [category, layerPoints] of Object.entries(locations) as [
@@ -431,7 +703,7 @@ export function computeDynamicBounds(
   ][]) {
     if (!visibleLayers[category]) continue;
     for (const point of layerPoints) {
-      if (point.area === zone.name) {
+      if (resolvePointZone(point, [zone]).zoneName === zone.name) {
         points.push(point);
       }
     }
@@ -479,12 +751,79 @@ function createEmptyStats(): NeighbourhoodStats {
 
 function createEmptyImpressions(): NeighbourhoodImpressions {
   return {
+    low: 0,
+    high: 0,
+    expected: 0,
     ubahn_poster: 0,
     ubahn_special: 0,
     bridge_banner: 0,
     street_furniture: 0,
     total: 0,
   };
+}
+
+function createEmptyQualityCounters(): ZoneQualityCounters {
+  return {
+    visiblePoints: 0,
+    geometryVerified: 0,
+    geometryInferred: 0,
+    taggedFallback: 0,
+    polygonMismatches: 0,
+    stationWeighted: 0,
+    defaultImpressions: 0,
+  };
+}
+
+function getImpressionDetails(point: LocationPoint, category: OOHCategory, market: MarketMeta): ImpressionDetails {
+  const lookupKey = extractTransitNodeKey(point.name);
+  const matchedValue = lookupKey ? market.transitWeights[lookupKey] : undefined;
+  const baseValue = matchedValue ?? market.transitDefaults[category];
+  const formatMultiplier = getFormatMultiplier(point, category);
+  const contextMultiplier = getContextMultiplier(point, category, matchedValue, market);
+  const { min, max } = OOH_CATEGORY_LIMITS[category];
+  const value = clamp(Math.round(baseValue * formatMultiplier * contextMultiplier), min, max);
+  const confidence = getImpressionConfidence(point, matchedValue);
+  const { lowFactor, highFactor } = getImpressionBand(confidence, matchedValue);
+
+  return {
+    stationMatched: Boolean(matchedValue),
+    confidence,
+    contextMultiplier,
+    formatMultiplier,
+    low: Math.round(value * lowFactor),
+    high: Math.round(value * highFactor),
+    value,
+  };
+}
+
+function recommendationRisks(zone: Neighbourhood, mode: ModeId, market: MarketMeta) {
+  const risks = [
+    zone.dataQuality?.polygonMismatches
+      ? `${zone.dataQuality.polygonMismatches} visible placements still rely on manual zone tags rather than polygon confirmation.`
+      : "Geometry coverage is stable, but the zone still depends on a curated rather than exhaustive inventory.",
+  ];
+
+  if (mode === "ooh") {
+    risks.push(
+      zone.gapAnalysis?.status === "oversaturated"
+        ? "OOH supply is already dense here, so creative quality and retail echo will matter more than incremental inventory."
+        : `Inventory availability at the highest-reach ${market.city} digital and transit nodes may compress quickly once buying windows open.`,
+    );
+  } else if (zone.stats.retail === 0) {
+    risks.push("Conversion support is weak in-zone, so the activation needs a deliberate handoff to retail or CRM capture.");
+  } else {
+    risks.push("Retail adjacency is present, but the shortlist still needs venue-level validation before media goes live.");
+  }
+
+  return risks;
+}
+
+function recommendationNextStep(zone: Neighbourhood, mode: ModeId, market: MarketMeta) {
+  if (mode === "ooh") {
+    return `Pressure-test ${zone.name} availability against premium ${market.city} digital and transit inventory, then shortlist the top 15 surfaces by reach, retail fit, and gap opportunity.`;
+  }
+
+  return `Validate the top three addresses in ${zone.name} with local ops, then turn the selected route into a timed launch calendar with venue, retail, and creator dependencies.`;
 }
 
 function extractTransitNodeKey(name: string) {
@@ -505,6 +844,112 @@ function extractTransitNodeKey(name: string) {
       .replace(/\s+[A-H](?:\/[A-H])?(?=\s|$).*/i, "")
       .trim(),
   );
+}
+
+function getImpressionConfidence(
+  point: LocationPoint,
+  matchedValue: number | undefined,
+): ConfidenceLevel {
+  if (matchedValue) {
+    return "high";
+  }
+
+  const sourceType = `${point.source_type ?? ""}`.toLowerCase();
+  if (sourceType.includes("planning")) {
+    return "low";
+  }
+
+  if (sourceType.includes("global") || sourceType.includes("ocean")) {
+    return "medium";
+  }
+
+  return "medium";
+}
+
+function getImpressionBand(
+  confidence: ConfidenceLevel,
+  matchedValue: number | undefined,
+) {
+  if (confidence === "high") {
+    return {
+      lowFactor: matchedValue ? 0.88 : 0.82,
+      highFactor: matchedValue ? 1.12 : 1.18,
+    };
+  }
+
+  if (confidence === "low") {
+    return {
+      lowFactor: 0.62,
+      highFactor: 1.42,
+    };
+  }
+
+  return {
+    lowFactor: 0.72,
+    highFactor: 1.28,
+  };
+}
+
+function getFormatMultiplier(point: LocationPoint, category: OOHCategory) {
+  const mediaType = `${point.media_type ?? ""}`.toLowerCase();
+
+  switch (category) {
+    case "ubahn_poster":
+      if (mediaType.includes("bus shelter")) return 0.92;
+      if (mediaType.includes("advertising panel")) return 0.95;
+      if (mediaType.includes("poster")) return 1;
+      return 0.94;
+    case "ubahn_special":
+      if (mediaType.includes("digital roadside billboard")) return 1.45;
+      if (mediaType.includes("digital")) return 1.25;
+      if (mediaType.includes("floor")) return 0.62;
+      if (mediaType.includes("stair") || mediaType.includes("treppen")) return 0.76;
+      return 1.08;
+    case "bridge_banner":
+      if (mediaType.includes("billboard") || mediaType.includes("hoarding")) return 1.25;
+      if (mediaType.includes("banner") || mediaType.includes("wrap")) return 1.08;
+      return 1.12;
+    case "street_furniture":
+      if (mediaType.includes("city light")) return 1.05;
+      if (mediaType.includes("telephone kiosk")) return 0.58;
+      if (mediaType.includes("totem")) return 0.9;
+      if (mediaType.includes("signage")) return 0.52;
+      return 0.86;
+    default:
+      return 1;
+  }
+}
+
+function getContextMultiplier(
+  point: LocationPoint,
+  category: OOHCategory,
+  matchedValue: number | undefined,
+  market: MarketMeta,
+) {
+  const text = `${point.name} ${point.media_type ?? ""} ${point.district ?? ""} ${point.area ?? ""}`.toLowerCase();
+  let multiplier = matchedValue ? 1.04 : 1;
+
+  if (
+    /westfield|piccadilly|leicester square|canary wharf|heathrow|oxford street|london bridge|alexanderplatz|zoologischer|kurfurstendamm|warschauer|kottbusser|hermannplatz/.test(
+      text,
+    )
+  ) {
+    multiplier += 0.12;
+  }
+
+  if (/ticket hall|bahnsteig|platform|ausgang|vorhalle|crossrail|broadway/.test(text)) {
+    multiplier += 0.05;
+  }
+
+  if (category === "street_furniture" && /phone box|telephone kiosk/.test(text)) {
+    multiplier -= 0.08;
+  }
+
+  if (market.code === "LDN" && /planning application core proxy/.test(`${point.source_type ?? ""}`.toLowerCase())) {
+    multiplier -= 0.04;
+  }
+
+  return clamp(Number(multiplier.toFixed(2)), 0.45, 1.35);
 }
 
 function normalizeTransitKey(value: string) {

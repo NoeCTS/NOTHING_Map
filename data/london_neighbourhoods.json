@@ -1,0 +1,276 @@
+{
+  "neighbourhoods": [
+    {
+      "name": "West End",
+      "scores": {
+        "cultural": 90,
+        "retail": 88,
+        "creator": 60,
+        "guerrilla": 90,
+        "ooh": 52
+      },
+      "stats": {
+        "galleries": 189,
+        "agencies": 5,
+        "venues": 118,
+        "coworking": 20,
+        "retail": 5,
+        "schools": 1,
+        "ubahn_poster": 23,
+        "ubahn_special": 145,
+        "bridge_banner": 47,
+        "street_furniture": 118
+      },
+      "description": "London's flagship visibility zone. Dense gallery coverage, major retail anchors, and premium OOH make it the clearest market-entry stage for high-impact launches.",
+      "brandFit": "high",
+      "bounds": [
+        [
+          51.505,
+          -0.153
+        ],
+        [
+          51.517,
+          -0.112
+        ]
+      ]
+    },
+    {
+      "name": "King's Cross",
+      "scores": {
+        "cultural": 49,
+        "retail": 68,
+        "creator": 44,
+        "guerrilla": 72,
+        "ooh": 92
+      },
+      "stats": {
+        "galleries": 69,
+        "agencies": 7,
+        "venues": 46,
+        "coworking": 26,
+        "retail": 1,
+        "schools": 1,
+        "ubahn_poster": 120,
+        "ubahn_special": 530,
+        "bridge_banner": 191,
+        "street_furniture": 367
+      },
+      "description": "Design-campus corridor with strong commuter flow. Balances cultural institutions, creative workspaces, and education touchpoints for launch programming with substance.",
+      "brandFit": "high",
+      "bounds": [
+        [
+          51.518,
+          -0.146
+        ],
+        [
+          51.537,
+          -0.091
+        ]
+      ]
+    },
+    {
+      "name": "Camden",
+      "scores": {
+        "cultural": 73,
+        "retail": 73,
+        "creator": 91,
+        "guerrilla": 73,
+        "ooh": 85
+      },
+      "stats": {
+        "galleries": 70,
+        "agencies": 12,
+        "venues": 66,
+        "coworking": 151,
+        "retail": 1,
+        "schools": 0,
+        "ubahn_poster": 82,
+        "ubahn_special": 556,
+        "bridge_banner": 129,
+        "street_furniture": 239
+      },
+      "description": "Youth and music energy cluster. Best suited to guerrilla work, nightlife adjacency, and creator-facing activations with strong street relevance.",
+      "brandFit": "high",
+      "bounds": [
+        [
+          51.532,
+          -0.165
+        ],
+        [
+          51.55,
+          -0.123
+        ]
+      ]
+    },
+    {
+      "name": "Shoreditch",
+      "scores": {
+        "cultural": 69,
+        "retail": 52,
+        "creator": 80,
+        "guerrilla": 60,
+        "ooh": 36
+      },
+      "stats": {
+        "galleries": 64,
+        "agencies": 33,
+        "venues": 74,
+        "coworking": 101,
+        "retail": 0,
+        "schools": 0,
+        "ubahn_poster": 0,
+        "ubahn_special": 0,
+        "bridge_banner": 0,
+        "street_furniture": 0
+      },
+      "description": "London's sharpest creator-network zone. Agency density, coworking, and cultural nightlife give it the strongest seeding and community-amplification profile.",
+      "brandFit": "high",
+      "bounds": [
+        [
+          51.515,
+          -0.102
+        ],
+        [
+          51.532,
+          -0.045
+        ]
+      ]
+    },
+    {
+      "name": "South Bank",
+      "scores": {
+        "cultural": 42,
+        "retail": 44,
+        "creator": 40,
+        "guerrilla": 41,
+        "ooh": 36
+      },
+      "stats": {
+        "galleries": 50,
+        "agencies": 5,
+        "venues": 35,
+        "coworking": 25,
+        "retail": 0,
+        "schools": 1,
+        "ubahn_poster": 0,
+        "ubahn_special": 2,
+        "bridge_banner": 0,
+        "street_furniture": 0
+      },
+      "description": "Public-culture spine with broad footfall. Museums, theatres, and commuter infrastructure make it effective for polished cultural launches and visible media support.",
+      "brandFit": "medium",
+      "bounds": [
+        [
+          51.495,
+          -0.134
+        ],
+        [
+          51.513,
+          -0.065
+        ]
+      ]
+    },
+    {
+      "name": "Brixton",
+      "scores": {
+        "cultural": 53,
+        "retail": 45,
+        "creator": 62,
+        "guerrilla": 47,
+        "ooh": 36
+      },
+      "stats": {
+        "galleries": 44,
+        "agencies": 5,
+        "venues": 48,
+        "coworking": 89,
+        "retail": 0,
+        "schools": 0,
+        "ubahn_poster": 0,
+        "ubahn_special": 1,
+        "bridge_banner": 0,
+        "street_furniture": 0
+      },
+      "description": "Grassroots nightlife and youth audience zone. Good for live programming, street presence, and community-led moments that need energy over polish.",
+      "brandFit": "medium",
+      "bounds": [
+        [
+          51.451,
+          -0.153
+        ],
+        [
+          51.47,
+          -0.105
+        ]
+      ]
+    },
+    {
+      "name": "Peckham",
+      "scores": {
+        "cultural": 48,
+        "retail": 42,
+        "creator": 58,
+        "guerrilla": 40,
+        "ooh": 36
+      },
+      "stats": {
+        "galleries": 40,
+        "agencies": 6,
+        "venues": 33,
+        "coworking": 79,
+        "retail": 0,
+        "schools": 1,
+        "ubahn_poster": 0,
+        "ubahn_special": 1,
+        "bridge_banner": 0,
+        "street_furniture": 0
+      },
+      "description": "Emerging creative cluster with a strong independent edge. Better for tastemaker activation and creator credibility than pure retail conversion.",
+      "brandFit": "medium",
+      "bounds": [
+        [
+          51.455,
+          -0.091
+        ],
+        [
+          51.485,
+          -0.03
+        ]
+      ]
+    },
+    {
+      "name": "Stratford",
+      "scores": {
+        "cultural": 56,
+        "retail": 40,
+        "creator": 86,
+        "guerrilla": 38,
+        "ooh": 38
+      },
+      "stats": {
+        "galleries": 23,
+        "agencies": 22,
+        "venues": 28,
+        "coworking": 146,
+        "retail": 1,
+        "schools": 2,
+        "ubahn_poster": 0,
+        "ubahn_special": 9,
+        "bridge_banner": 0,
+        "street_furniture": 0
+      },
+      "description": "Retail-and-OOH leverage zone for East London. Westfield-scale footfall and premium screen inventory make it the strongest awareness-to-conversion corridor outside the West End.",
+      "brandFit": "medium",
+      "bounds": [
+        [
+          51.532,
+          -0.035
+        ],
+        [
+          51.55,
+          0.026
+        ]
+      ]
+    }
+  ]
+}

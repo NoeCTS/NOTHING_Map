@@ -1,4 +1,12 @@
-export function Header() {
+import Link from "next/link";
+import { MarketMeta } from "@/components/types";
+import { MARKET_OPTIONS } from "@/data/markets";
+
+interface HeaderProps {
+  market: MarketMeta;
+}
+
+export function Header({ market }: HeaderProps) {
   const glyphDots = Array.from({ length: 12 });
 
   return (
@@ -28,7 +36,18 @@ export function Header() {
             <line x1="12" y1="6" x2="12" y2="2" />
             <line x1="12" y1="22" x2="12" y2="18" />
           </svg>
-          <span>BERLIN, DE</span>
+          <span>{market.locationLabel}</span>
+        </div>
+        <div className="market-switch" aria-label="Market switcher">
+          {MARKET_OPTIONS.map((option) => (
+            <Link
+              key={option.id}
+              className={`market-pill${option.id === market.code ? " active" : ""}`}
+              href={`/?market=${option.id}`}
+            >
+              {option.id}
+            </Link>
+          ))}
         </div>
         <div className="topbar-divider" />
         <div className="topbar-status">

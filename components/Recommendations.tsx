@@ -1,40 +1,38 @@
-import { BreakdownMetric, ModeId, Neighbourhood, Recommendation } from "@/components/types";
+import {
+  MarketMeta,
+  ModeId,
+  Neighbourhood,
+  Recommendation,
+} from "@/components/types";
 import {
   formatImpressions,
-  getBreakdown,
   modeLabel,
   scoreForMode,
-  summaryLine,
 } from "@/lib/groundSignal";
 
 interface RecommendationsProps {
   activeMode: ModeId;
-  gapAnalysisEnabled: boolean;
-  isExportingPdf: boolean;
+  market: MarketMeta;
   neighbourhoods: Neighbourhood[];
   selectedZone: Neighbourhood;
   recommendation: Recommendation | null;
-  onExportPdf: () => void;
   onGenerate: () => void;
   onSelectZone: (zoneName: string) => void;
 }
 
 export function Recommendations({
   activeMode,
-  gapAnalysisEnabled,
-  isExportingPdf,
+  market,
   neighbourhoods,
   selectedZone,
   recommendation,
-  onExportPdf,
   onGenerate,
   onSelectZone,
 }: RecommendationsProps) {
-  const detailMetrics = getBreakdown(selectedZone, activeMode);
   const selectedScore = scoreForMode(selectedZone, activeMode);
-  const lastIndex = neighbourhoods.length - 1;
   const isOoh = activeMode === "ooh";
   const estimatedImpressions = selectedZone.impressions?.total ?? 0;
+  const scoreDrivers = selectedZone.scoreExplanations?.[activeMode]?.drivers.slice(0, 3) ?? [];
 
   return (
     <aside className="recommendations-panel">
@@ -42,7 +40,7 @@ export function Recommendations({
         <div className="rankings-header">
           <div className="section-header">
             <span className="section-header-dot" />
-            <span className="section-kicker">Top Zones</span>
+            <span className="section-kicker">Zone Rankings</span>
           </div>
         </div>
 
@@ -50,31 +48,24 @@ export function Recommendations({
           {neighbourhoods.map((zone, index) => {
             const score = scoreForMode(zone, activeMode);
             const isSelected = zone.name === selectedZone.name;
-            const isLast = index === lastIndex;
 
             return (
               <button
                 key={zone.name}
-                className={`rank-card${isSelected ? " active" : ""}${isLast && !isSelected ? " dimmed" : ""}`}
+                className={`rank-card${isSelected ? " active" : ""}`}
                 onClick={() => onSelectZone(zone.name)}
                 type="button"
               >
                 <div className="rank-top-row">
                   <div className="rank-left">
                     <span className="rank-index">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="rank-name">{zone.name.toUpperCase()}</span>
+                    <span className="rank-name">{zone.name}</span>
                   </div>
-                  <div className="rank-right">
-                    {gapAnalysisEnabled && zone.gapAnalysis ? (
-                      <GapBadge status={zone.gapAnalysis.status} />
-                    ) : null}
-                    <span className="rank-score">{score}</span>
-                  </div>
+                  <span className="rank-score">{score}</span>
                 </div>
                 <div className="score-bar">
                   <div className="score-bar-fill" style={{ width: `${score}%` }} />
                 </div>
-                {!isLast && <p className="rank-meta">{summaryLine(zone, activeMode)}</p>}
               </button>
             );
           })}
@@ -85,45 +76,34 @@ export function Recommendations({
         <div className="zone-detail-top">
           <div>
             <h3 className="zone-title">{selectedZone.name}</h3>
-            <p className="zone-mode">OPT: {modeLabel(activeMode)}</p>
+            <p className="zone-mode">{modeLabel(activeMode)}</p>
           </div>
-          <div className="zone-detail-score-group">
-            {gapAnalysisEnabled && selectedZone.gapAnalysis ? (
-              <GapBadge status={selectedZone.gapAnalysis.status} />
-            ) : null}
-            <div className="zone-score-chip">{selectedScore}</div>
-          </div>
+          <div className="zone-score-chip">{selectedScore}</div>
         </div>
 
         {isOoh ? (
           <>
             <div className="stats-grid">
-              <StatChip label="Post" value={selectedZone.stats.ubahn_poster} />
-              <StatChip label="Prem" value={selectedZone.stats.ubahn_special} />
-              <StatChip label="Brdg" value={selectedZone.stats.bridge_banner} />
-              <StatChip label="Strt" value={selectedZone.stats.street_furniture} />
+              <StatChip label={market.oohLabels.ubahn_poster} value={selectedZone.stats.ubahn_poster} />
+              <StatChip label={market.oohLabels.ubahn_special} value={selectedZone.stats.ubahn_special} />
+              <StatChip label={market.oohLabels.bridge_banner} value={selectedZone.stats.bridge_banner} />
+              <StatChip label={market.oohLabels.street_furniture} value={selectedZone.stats.street_furniture} />
             </div>
             <div className="ooh-impressions-row">
-              <span className="ooh-impressions-label">Est. Daily Impressions</span>
+              <span className="ooh-impressions-label">{market.city} Daily Impressions</span>
               <strong className="ooh-impressions-value">{formatImpressions(estimatedImpressions)}</strong>
             </div>
           </>
         ) : (
           <div className="stats-grid">
-            <StatChip label="Gal" value={selectedZone.stats.galleries} />
-            <StatChip label="Agy" value={selectedZone.stats.agencies} />
-            <StatChip label="Ven" value={selectedZone.stats.venues} />
-            <StatChip label="Ret" value={selectedZone.stats.retail} />
+            <StatChip label="Galleries" value={selectedZone.stats.galleries} />
+            <StatChip label="Agencies" value={selectedZone.stats.agencies} />
+            <StatChip label="Venues" value={selectedZone.stats.venues} />
+            <StatChip label="Retail" value={selectedZone.stats.retail} />
           </div>
         )}
 
         <p className="zone-description">{selectedZone.description}</p>
-
-        <div className="metric-stack">
-          {detailMetrics.map((metric) => (
-            <DetailMetric key={metric.label} metric={metric} isOoh={isOoh} />
-          ))}
-        </div>
 
         <button className="btn-generate" onClick={onGenerate} type="button">
           Generate Report
@@ -131,24 +111,74 @@ export function Recommendations({
 
         {recommendation ? (
           <div className="recommendation-card">
-            <div className="recommendation-divider" />
-            <div className="section-kicker">Recommended Zone</div>
+            <div className="section-kicker">Recommendation</div>
             <h3 className="recommendation-title">{recommendation.zone}</h3>
 
+            {recommendation.metrics.length ? (
+              <div className="recommendation-grid">
+                {recommendation.metrics.map((metric) => (
+                  <div key={metric.label} className="recommendation-micro">
+                    <span className="recommendation-micro-label">{metric.label}</span>
+                    <strong>{metric.value}</strong>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            {recommendation.impressionRange ? (
+              <div className="recommendation-block">
+                <div className="recommendation-label">Reach Model</div>
+                <div className="recommendation-grid">
+                  <div className="recommendation-micro">
+                    <span className="recommendation-micro-label">Expected</span>
+                    <strong>{formatImpressions(recommendation.impressionRange.expected)}</strong>
+                  </div>
+                  <div className="recommendation-micro">
+                    <span className="recommendation-micro-label">Range</span>
+                    <strong>
+                      {formatImpressions(recommendation.impressionRange.low)}-{formatImpressions(recommendation.impressionRange.high)}
+                    </strong>
+                  </div>
+                  <div className="recommendation-micro">
+                    <span className="recommendation-micro-label">Confidence</span>
+                    <strong>{recommendation.impressionRange.confidence.toUpperCase()}</strong>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             <div className="recommendation-block">
-              <div className="recommendation-label">Why</div>
+              <div className="recommendation-label">Why This Zone</div>
               {recommendation.why.map((line) => (
                 <p key={line} className="recommendation-copy">{line}</p>
               ))}
             </div>
 
+            {scoreDrivers.length ? (
+              <div className="recommendation-block">
+                <div className="recommendation-label">Score Drivers</div>
+                <ul className="recommendation-list">
+                  {scoreDrivers.map((driver) => (
+                    <li key={driver.label}>
+                      {driver.label}: {driver.displayCurrent} live vs {driver.displayBaseline} full coverage
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
             <div className="recommendation-block">
-              <div className="recommendation-label">Suggested Activation</div>
+              <div className="recommendation-label">Activation</div>
               <p className="recommendation-copy">{recommendation.activation}</p>
             </div>
 
             <div className="recommendation-block">
-              <div className="recommendation-label">KPIs To Track</div>
+              <div className="recommendation-label">Budget</div>
+              <p className="recommendation-copy">{recommendation.budget}</p>
+            </div>
+
+            <div className="recommendation-block">
+              <div className="recommendation-label">KPIs</div>
               <ul className="recommendation-list">
                 {recommendation.kpis.map((kpi) => (
                   <li key={kpi}>{kpi}</li>
@@ -156,41 +186,32 @@ export function Recommendations({
               </ul>
             </div>
 
-            <button
-              className="btn-export"
-              disabled={isExportingPdf}
-              onClick={onExportPdf}
-              type="button"
-            >
-              {isExportingPdf ? "Exporting..." : "Export PDF"}
-            </button>
+            <div className="recommendation-block">
+              <div className="recommendation-label">Risks</div>
+              <ul className="recommendation-list">
+                {recommendation.risks.map((risk) => (
+                  <li key={risk}>{risk}</li>
+                ))}
+              </ul>
+            </div>
 
-            <div className="recommendation-divider" />
+            <div className="recommendation-block">
+              <div className="recommendation-label">Math / Assumptions</div>
+              <ul className="recommendation-list">
+                {recommendation.assumptions.map((assumption) => (
+                  <li key={assumption}>{assumption}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="recommendation-block">
+              <div className="recommendation-label">Next Step</div>
+              <p className="recommendation-copy">{recommendation.nextStep}</p>
+            </div>
           </div>
         ) : null}
       </section>
     </aside>
-  );
-}
-
-function DetailMetric({ metric, isOoh }: { metric: BreakdownMetric; isOoh: boolean }) {
-  const isBrandFit = metric.label.toLowerCase() === "brand fit";
-  const isAccent = isBrandFit || isOoh;
-  return (
-    <div className="metric-item">
-      <div className="metric-head">
-        <span className="metric-label">{metric.label}</span>
-        <span className={`metric-value${isAccent ? " accent" : ""}`}>
-          {metric.displayValue ?? String(metric.value).padStart(2, "0")}
-        </span>
-      </div>
-      <div className="metric-bar">
-        <div
-          className={`metric-bar-fill ${isAccent ? "red" : "white"}`}
-          style={{ width: `${metric.value}%` }}
-        />
-      </div>
-    </div>
   );
 }
 
@@ -201,15 +222,4 @@ function StatChip({ label, value }: { label: string; value: number }) {
       <strong className={`stat-chip-value${value === 0 ? " zero" : ""}`}>{value}</strong>
     </div>
   );
-}
-
-function GapBadge({ status }: { status: NonNullable<Neighbourhood["gapAnalysis"]>["status"] }) {
-  const label =
-    status === "opportunity"
-      ? "Opportunity"
-      : status === "oversaturated"
-        ? "Oversaturated"
-        : "Balanced";
-
-  return <span className={`gap-badge ${status}`}>{label}</span>;
 }

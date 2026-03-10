@@ -1,135 +1,5 @@
 {
-  "retail": [
-    {
-      "name": "Saturn Alexanderplatz",
-      "lat": 52.5219,
-      "lng": 13.4132,
-      "area": "Mitte",
-      "type": "saturn"
-    },
-    {
-      "name": "Saturn Europa-Center",
-      "lat": 52.5048,
-      "lng": 13.3371,
-      "area": "Charlottenburg",
-      "type": "saturn"
-    },
-    {
-      "name": "MediaMarkt Alexa",
-      "lat": 52.5115,
-      "lng": 13.4186,
-      "area": "Mitte",
-      "type": "mediamarkt"
-    },
-    {
-      "name": "MediaMarkt Schonhauser",
-      "lat": 52.549,
-      "lng": 13.4141,
-      "area": "Prenzlauer Berg",
-      "type": "mediamarkt"
-    },
-    {
-      "name": "Saturn Mall of Berlin",
-      "lat": 52.5094,
-      "lng": 13.3765,
-      "area": "Mitte",
-      "type": "saturn"
-    },
-    {
-      "name": "MediaMarkt Tegel",
-      "lat": 52.5623,
-      "lng": 13.334,
-      "area": "Charlottenburg",
-      "type": "mediamarkt"
-    },
-    {
-      "name": "Saturn Eastgate",
-      "lat": 52.514,
-      "lng": 13.5278,
-      "area": "Friedrichshain",
-      "type": "saturn"
-    },
-    {
-      "name": "MediaMarkt Steglitz",
-      "lat": 52.4575,
-      "lng": 13.3266,
-      "area": "Charlottenburg",
-      "type": "mediamarkt"
-    }
-  ],
   "galleries": [
-    {
-      "name": "KW Institute",
-      "lat": 52.5268,
-      "lng": 13.3958,
-      "area": "Mitte"
-    },
-    {
-      "name": "Hamburger Bahnhof - Tiergarten",
-      "lat": 52.52818,
-      "lng": 13.37149,
-      "area": "Mitte"
-    },
-    {
-      "name": "Stiftung Berlinische Galerie",
-      "lat": 52.50408,
-      "lng": 13.39881,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Konig Galerie",
-      "lat": 52.4987,
-      "lng": 13.3774,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "CFA Berlin",
-      "lat": 52.5255,
-      "lng": 13.3931,
-      "area": "Mitte"
-    },
-    {
-      "name": "Spruth Magers",
-      "lat": 52.5241,
-      "lng": 13.3887,
-      "area": "Mitte"
-    },
-    {
-      "name": "Galerie Thomas Schulte",
-      "lat": 52.5063,
-      "lng": 13.3914,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Blain|Southern",
-      "lat": 52.5231,
-      "lng": 13.3948,
-      "area": "Mitte"
-    },
-    {
-      "name": "neugerriemschneider",
-      "lat": 52.4994,
-      "lng": 13.4179,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Capitain Petzel",
-      "lat": 52.5268,
-      "lng": 13.4015,
-      "area": "Mitte"
-    },
-    {
-      "name": "Kindl Centre",
-      "lat": 52.4754,
-      "lng": 13.4519,
-      "area": "Neukolln"
-    },
-    {
-      "name": "Urban Spree",
-      "lat": 52.5068,
-      "lng": 13.453,
-      "area": "Friedrichshain"
-    },
     {
       "name": "Bauhaus-Archiv",
       "lat": 52.50607,
@@ -137,7 +7,7 @@
       "area": "Charlottenburg"
     },
     {
-      "name": "Br\u00fccke Museum",
+      "name": "Brücke Museum",
       "lat": 52.46682,
       "lng": 13.27455,
       "area": "Charlottenburg"
@@ -155,7 +25,13 @@
       "area": "Mitte"
     },
     {
-      "name": "Stiftung Br\u00f6han-Museum",
+      "name": "Stiftung Berlinische Galerie",
+      "lat": 52.50408,
+      "lng": 13.39881,
+      "area": "Kreuzberg"
+    },
+    {
+      "name": "Stiftung Bröhan-Museum",
       "lat": 52.5189,
       "lng": 13.29517,
       "area": "Charlottenburg"
@@ -167,7 +43,7 @@
       "area": "Mitte"
     },
     {
-      "name": "Stiftung Dom\u00e4ne Dahlem",
+      "name": "Stiftung Domäne Dahlem",
       "lat": 52.45842,
       "lng": 13.28866,
       "area": "Charlottenburg"
@@ -203,7 +79,7 @@
       "area": "Mitte"
     },
     {
-      "name": "K\u00fcnstlerhaus Bethanien (KHB)",
+      "name": "Künstlerhaus Bethanien (KHB)",
       "lat": 52.496972,
       "lng": 13.418639,
       "area": "Kreuzberg"
@@ -221,13 +97,13 @@
       "area": "Mitte"
     },
     {
-      "name": "Bodemuseum mit Skulpturensammlung, Museum f\u00fcr Byzantinische Kunst und M\u00fcnzkabinett - Museumsinsel",
+      "name": "Bodemuseum mit Skulpturensammlung, Museum für Byzantinische Kunst und Münzkabinett - Museumsinsel",
       "lat": 52.51551,
       "lng": 13.38475,
       "area": "Mitte"
     },
     {
-      "name": "Ethnologisches Museum - Museen Dahlem (Zentralkasse) mit Museum Europ\u00e4ischer Kulturen und Museum f\u00fcr Asiatische Kunst",
+      "name": "Ethnologisches Museum - Museen Dahlem (Zentralkasse) mit Museum Europäischer Kulturen und Museum für Asiatische Kunst",
       "lat": 52.45732,
       "lng": 13.29288,
       "area": "Charlottenburg"
@@ -239,9 +115,15 @@
       "area": "Mitte"
     },
     {
-      "name": "Gem\u00e4ldegalerie - Kulturforum (Zentralkasse) mit Kunstbibliothek und Kupferstichkabinett",
+      "name": "Gemäldegalerie - Kulturforum (Zentralkasse) mit Kunstbibliothek und Kupferstichkabinett",
       "lat": 52.50822,
       "lng": 13.36734,
+      "area": "Mitte"
+    },
+    {
+      "name": "Hamburger Bahnhof - Tiergarten",
+      "lat": 52.52818,
+      "lng": 13.37149,
       "area": "Mitte"
     },
     {
@@ -257,13 +139,19 @@
       "area": "Mitte"
     },
     {
+      "name": "Kunstgewerbemuseum - Schloss Köpenick",
+      "lat": 52.44405,
+      "lng": 13.57291,
+      "area": "Neukolln"
+    },
+    {
       "name": "Museum Berggruen - Charlottenburg",
       "lat": 52.51895,
       "lng": 13.2958,
       "area": "Charlottenburg"
     },
     {
-      "name": "Museum f\u00fcr Fotografie - Charlottenburg",
+      "name": "Museum für Fotografie - Charlottenburg",
       "lat": 52.5082,
       "lng": 13.33186,
       "area": "Charlottenburg"
@@ -275,13 +163,19 @@
       "area": "Mitte"
     },
     {
-      "name": "Neues Museum mit \u00c4gyptisches Museum, Museum f\u00fcr Vor- und Fr\u00fchgeschichte - Museumsinsel",
+      "name": "Neue Nationalgalerie - Kulturforum",
+      "lat": 52.50658,
+      "lng": 13.36733,
+      "area": "Mitte"
+    },
+    {
+      "name": "Neues Museum mit Ägyptisches Museum, Museum für Vor- und Frühgeschichte - Museumsinsel",
       "lat": 52.5194,
       "lng": 13.39883,
       "area": "Mitte"
     },
     {
-      "name": "Pergamonmuseum mit Antikensammlung, Museum f\u00fcr Islamische Kunst, Vorderasiatischem Museum, M\u00fcnzkabinett - Musuemsinsel",
+      "name": "Pergamonmuseum mit Antikensammlung, Museum für Islamische Kunst, Vorderasiatischem Museum, Münzkabinett - Musuemsinsel",
       "lat": 52.5194,
       "lng": 13.39883,
       "area": "Mitte"
@@ -301,57 +195,9 @@
   ],
   "agencies": [
     {
-      "name": "ACHTUNG! Berlin",
-      "lat": 52.5012,
-      "lng": 13.4152,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Demodern",
-      "lat": 52.5035,
-      "lng": 13.4489,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Serviceplan Berlin",
-      "lat": 52.5241,
-      "lng": 13.4012,
-      "area": "Mitte"
-    },
-    {
-      "name": "Scholz & Friends Group GMBH",
-      "lat": 52.521966,
-      "lng": 13.409005,
-      "area": "Mitte"
-    },
-    {
-      "name": "Studio Cosmos",
-      "lat": 52.4946,
-      "lng": 13.4225,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Bureau Borsche",
-      "lat": 52.501,
-      "lng": 13.4301,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Echo Poster",
-      "lat": 52.4998,
-      "lng": 13.4187,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Metadesign",
-      "lat": 52.534546,
-      "lng": 13.422979,
-      "area": "Prenzlauer Berg"
-    },
-    {
-      "name": "DDB Berlin",
-      "lat": 52.5068,
-      "lng": 13.333,
+      "name": "Dayy",
+      "lat": 52.508064,
+      "lng": 13.320246,
       "area": "Charlottenburg"
     },
     {
@@ -361,15 +207,15 @@
       "area": "Kreuzberg"
     },
     {
-      "name": "Dayy",
-      "lat": 52.508064,
-      "lng": 13.320246,
-      "area": "Charlottenburg"
-    },
-    {
       "name": "wirDesign communication AG",
       "lat": 52.537419,
       "lng": 13.4101,
+      "area": "Prenzlauer Berg"
+    },
+    {
+      "name": "Metadesign",
+      "lat": 52.534546,
+      "lng": 13.422979,
       "area": "Prenzlauer Berg"
     },
     {
@@ -559,6 +405,12 @@
       "area": "Mitte"
     },
     {
+      "name": "Scholz & Friends Group GMBH",
+      "lat": 52.521966,
+      "lng": 13.409005,
+      "area": "Mitte"
+    },
+    {
       "name": "Spotify GMBH",
       "lat": 52.516619,
       "lng": 13.388654,
@@ -583,135 +435,7 @@
       "area": "Mitte"
     }
   ],
-  "coworking": [
-    {
-      "name": "Factory Berlin Mitte",
-      "lat": 52.5239,
-      "lng": 13.4129,
-      "area": "Mitte"
-    },
-    {
-      "name": "Factory Berlin Gorlitzer",
-      "lat": 52.4983,
-      "lng": 13.4368,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "betahaus",
-      "lat": 52.5025,
-      "lng": 13.4188,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "WeWork Sony Center",
-      "lat": 52.5094,
-      "lng": 13.3744,
-      "area": "Mitte"
-    },
-    {
-      "name": "Ahoy! Berlin",
-      "lat": 52.5012,
-      "lng": 13.4245,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "rent24 Mitte",
-      "lat": 52.523,
-      "lng": 13.4073,
-      "area": "Mitte"
-    },
-    {
-      "name": "co.up Community",
-      "lat": 52.5003,
-      "lng": 13.4192,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Mindspace Berlin",
-      "lat": 52.5195,
-      "lng": 13.3882,
-      "area": "Mitte"
-    },
-    {
-      "name": "Landesarchiv Berlin",
-      "lat": 52.579944,
-      "lng": 13.31675,
-      "area": "Charlottenburg"
-    },
-    {
-      "name": "Stiftung Zentral- und Landesbibliothek Berlin",
-      "lat": 52.51525,
-      "lng": 13.4045,
-      "area": "Mitte"
-    }
-  ],
   "venues": [
-    {
-      "name": "Berghain",
-      "lat": 52.5109,
-      "lng": 13.4429,
-      "area": "Friedrichshain"
-    },
-    {
-      "name": "Tresor",
-      "lat": 52.51,
-      "lng": 13.4186,
-      "area": "Mitte"
-    },
-    {
-      "name": "SchwuZ",
-      "lat": 52.4754,
-      "lng": 13.441,
-      "area": "Neukolln"
-    },
-    {
-      "name": "Watergate",
-      "lat": 52.5014,
-      "lng": 13.4443,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "SO36",
-      "lat": 52.4999,
-      "lng": 13.4301,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Lido",
-      "lat": 52.4966,
-      "lng": 13.4293,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Festsaal Kreuzberg",
-      "lat": 52.4946,
-      "lng": 13.4156,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Kater Blau",
-      "lat": 52.5115,
-      "lng": 13.4421,
-      "area": "Friedrichshain"
-    },
-    {
-      "name": "//about blank",
-      "lat": 52.5089,
-      "lng": 13.4671,
-      "area": "Friedrichshain"
-    },
-    {
-      "name": "Monarch",
-      "lat": 52.4988,
-      "lng": 13.4261,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "Silent Green",
-      "lat": 52.5465,
-      "lng": 13.3595,
-      "area": "Wedding"
-    },
     {
       "name": "ATZE Musiktheater",
       "lat": 52.543278,
@@ -797,7 +521,7 @@
       "area": "Mitte"
     },
     {
-      "name": "Theater Thikw\u00e0",
+      "name": "Theater Thikwà",
       "lat": 52.487222,
       "lng": 13.388528,
       "area": "Kreuzberg"
@@ -815,7 +539,7 @@
       "area": "Mitte"
     },
     {
-      "name": "Zeitgen\u00f6ssische Oper Berlin",
+      "name": "Zeitgenössische Oper Berlin",
       "lat": 52.532639,
       "lng": 13.412028,
       "area": "Mitte"
@@ -851,7 +575,7 @@
       "area": "Prenzlauer Berg"
     },
     {
-      "name": "Heimathafen Neuk\u00f6lln",
+      "name": "Heimathafen Neukölln",
       "lat": 52.476972,
       "lng": 13.439194,
       "area": "Neukolln"
@@ -875,19 +599,19 @@
       "area": "Friedrichshain"
     },
     {
-      "name": "ada Studio & B\u00fchne",
+      "name": "ada Studio & Bühne",
       "lat": 52.551833,
       "lng": 13.374417,
       "area": "Mitte"
     },
     {
-      "name": "Dokumentationszentrum NS-Zwangsarbeit Berlin-Sch\u00f6neweide",
+      "name": "Dokumentationszentrum NS-Zwangsarbeit Berlin-Schöneweide",
       "lat": 52.453194,
       "lng": 13.518056,
       "area": "Neukolln"
     },
     {
-      "name": "Gedenkst\u00e4tte Deutscher Widerstand",
+      "name": "Gedenkstätte Deutscher Widerstand",
       "lat": 52.507722,
       "lng": 13.3635,
       "area": "Mitte"
@@ -899,7 +623,7 @@
       "area": "Mitte"
     },
     {
-      "name": "Stiftung Gedenkst\u00e4tte Berlin-Hohensch\u00f6nhausen",
+      "name": "Stiftung Gedenkstätte Berlin-Hohenschönhausen",
       "lat": 52.541806,
       "lng": 13.501417,
       "area": "Friedrichshain"
@@ -911,7 +635,7 @@
       "area": "Kreuzberg"
     },
     {
-      "name": "Tr\u00e4gerverein Haus der Wannseekonferenz",
+      "name": "Trägerverein Haus der Wannseekonferenz",
       "lat": 52.432056,
       "lng": 13.165028,
       "area": "Charlottenburg"
@@ -941,13 +665,13 @@
       "area": "Charlottenburg"
     },
     {
-      "name": "Schloss Sch\u00f6nhausen",
+      "name": "Schloss Schönhausen",
       "lat": 52.57838,
       "lng": 13.40568,
       "area": "Prenzlauer Berg"
     },
     {
-      "name": "B\u00fchnen am K\u00fcrf\u00fcrstendamm",
+      "name": "Bühnen am Kürfürstendamm",
       "lat": 52.501944,
       "lng": 13.323639,
       "area": "Charlottenburg"
@@ -995,19 +719,19 @@
       "area": "Charlottenburg"
     },
     {
-      "name": "Schaub\u00fchne am Lehniner Platz",
+      "name": "Schaubühne am Lehniner Platz",
       "lat": 52.498694,
       "lng": 13.302833,
       "area": "Charlottenburg"
     },
     {
-      "name": "Volksb\u00fchne",
+      "name": "Volksbühne",
       "lat": 52.52725,
       "lng": 13.412389,
       "area": "Mitte"
     },
     {
-      "name": "J\u00fcdisches Theater",
+      "name": "Jüdisches Theater",
       "lat": 52.502111,
       "lng": 13.329306,
       "area": "Charlottenburg"
@@ -1025,7 +749,7 @@
       "area": "Friedrichshain"
     },
     {
-      "name": "Ballhaus Naunynstra\u00dfe",
+      "name": "Ballhaus Naunynstraße",
       "lat": 52.502,
       "lng": 13.421333,
       "area": "Kreuzberg"
@@ -1037,13 +761,13 @@
       "area": "Mitte"
     },
     {
-      "name": "Kleines Theater am S\u00fcdwestkorso GmbH",
+      "name": "Kleines Theater am Südwestkorso GmbH",
       "lat": 52.473306,
       "lng": 13.322361,
       "area": "Charlottenburg"
     },
     {
-      "name": "Neuk\u00f6llner Oper",
+      "name": "Neuköllner Oper",
       "lat": 52.477556,
       "lng": 13.439472,
       "area": "Neukolln"
@@ -1061,7 +785,7 @@
       "area": "Kreuzberg"
     },
     {
-      "name": "Sophiens\u00e6le",
+      "name": "Sophiensæle",
       "lat": 52.525861,
       "lng": 13.401611,
       "area": "Mitte"
@@ -1091,13 +815,13 @@
       "area": "Mitte"
     },
     {
-      "name": "Vaganten B\u00fchne Gemeinn\u00fctzige",
+      "name": "Vaganten Bühne Gemeinnützige",
       "lat": 52.50575,
       "lng": 13.328833,
       "area": "Charlottenburg"
     },
     {
-      "name": "ConSense - Ges. zur F\u00f6rderung von Kultur mbH (Kulturbrauerei)",
+      "name": "ConSense - Ges. zur Förderung von Kultur mbH (Kulturbrauerei)",
       "lat": 52.538306,
       "lng": 13.413,
       "area": "Prenzlauer Berg"
@@ -1121,7 +845,7 @@
       "area": "Kreuzberg"
     },
     {
-      "name": "LesArt - Berliner Zentrum f\u00fcr Kinder- und Jugendliteratur",
+      "name": "LesArt - Berliner Zentrum für Kinder- und Jugendliteratur",
       "lat": 52.52525,
       "lng": 13.405083,
       "area": "Mitte"
@@ -1157,7 +881,7 @@
       "area": "Mitte"
     },
     {
-      "name": "Rundfunk-Orchester und -Ch\u00f6re GmbH",
+      "name": "Rundfunk-Orchester und -Chöre GmbH",
       "lat": 52.513361,
       "lng": 13.391083,
       "area": "Mitte"
@@ -1199,35 +923,17 @@
       "area": "Mitte"
     }
   ],
-  "schools": [
+  "coworking": [
     {
-      "name": "UdK Berlin",
-      "lat": 52.5076,
-      "lng": 13.3278,
+      "name": "Landesarchiv Berlin",
+      "lat": 52.579944,
+      "lng": 13.31675,
       "area": "Charlottenburg"
     },
     {
-      "name": "Weissensee Academy",
-      "lat": 52.5561,
-      "lng": 13.4653,
-      "area": "Weissensee"
-    },
-    {
-      "name": "HTW Berlin (Design)",
-      "lat": 52.4571,
-      "lng": 13.5261,
-      "area": "Schoneweide"
-    },
-    {
-      "name": "Design Akademie Berlin",
-      "lat": 52.5024,
-      "lng": 13.4198,
-      "area": "Kreuzberg"
-    },
-    {
-      "name": "SRH Berlin (Design)",
-      "lat": 52.5159,
-      "lng": 13.389,
+      "name": "Stiftung Zentral- und Landesbibliothek Berlin",
+      "lat": 52.51525,
+      "lng": 13.4045,
       "area": "Mitte"
     }
   ]

@@ -1,11 +1,17 @@
-import { LocationCategory, LocationsData, ModeId } from "@/components/types";
-import { LAYER_CONFIG, MODES } from "@/lib/groundSignal";
+import {
+  LocationCategory,
+  LocationsData,
+  MarketMeta,
+  ModeId,
+} from "@/components/types";
+import { getLayerConfig, getModes } from "@/lib/groundSignal";
 
 interface ControlsProps {
   activeMode: ModeId;
   gapAnalysisEnabled: boolean;
   heatmapEnabled: boolean;
   locations: LocationsData;
+  market: MarketMeta;
   markersVisible: boolean;
   radiusOverlay: boolean;
   visibleLayers: Record<LocationCategory, boolean>;
@@ -33,6 +39,7 @@ export function Controls({
   gapAnalysisEnabled,
   heatmapEnabled,
   locations,
+  market,
   markersVisible,
   radiusOverlay,
   visibleLayers,
@@ -44,11 +51,14 @@ export function Controls({
   onToggleRadiusOverlay,
 }: ControlsProps) {
   const totalNodes = Object.values(locations).reduce((sum, arr) => sum + arr.length, 0);
+  const layerConfig = getLayerConfig(market);
+  const modes = getModes(market);
 
-  const baseLayers = LAYER_CONFIG.filter(
-    (layer) => !["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"].includes(layer.id),
+  const baseLayers = layerConfig.filter(
+    (layer) =>
+      !["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"].includes(layer.id),
   );
-  const oohLayers = LAYER_CONFIG.filter((layer) =>
+  const oohLayers = layerConfig.filter((layer) =>
     ["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"].includes(layer.id),
   );
 
@@ -57,23 +67,24 @@ export function Controls({
       <section className="controls-section">
         <div className="section-header">
           <span className="section-header-dot" />
-          <span className="section-kicker">Analysis Mode</span>
+          <span className="section-kicker">Mode</span>
         </div>
-        <div className="mode-stack">
-          {MODES.map((mode) => {
+        <div className="mode-pills">
+          {modes.map((mode) => {
             const isActive = mode.id === activeMode;
+            const shortLabel = mode.id === "cultural" ? "Cultural"
+              : mode.id === "retail" ? "Retail"
+              : mode.id === "creator" ? "Creator"
+              : mode.id === "guerrilla" ? "Guerrilla"
+              : "OOH";
             return (
               <button
                 key={mode.id}
-                className={`mode-card${isActive ? " active" : ""}`}
+                className={`mode-pill${isActive ? " active" : ""}`}
                 onClick={() => onModeChange(mode.id)}
                 type="button"
               >
-                <div className="mode-card-top">
-                  <span className="mode-card-label">{mode.label}</span>
-                  <div className="mode-dot" />
-                </div>
-                <p className="mode-blurb">{mode.blurb}</p>
+                {shortLabel}
               </button>
             );
           })}
@@ -181,6 +192,7 @@ export function Controls({
           />
         </div>
       </section>
+
     </aside>
   );
 }
