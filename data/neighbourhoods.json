@@ -1,0 +1,52 @@
+{
+  "neighbourhoods": [
+    {
+      "name": "Kreuzberg",
+      "scores": { "cultural": 82, "retail": 71, "creator": 85, "guerrilla": 79, "ooh": 88 },
+      "stats": { "galleries": 4, "agencies": 5, "venues": 6, "coworking": 4, "retail": 2, "schools": 1, "ubahn_poster": 180, "ubahn_special": 520, "bridge_banner": 6, "street_furniture": 82 },
+      "description": "Highest creative density in Berlin. Strong youth and design audience. Multiple retail touchpoints within walking distance. Primary recommendation for cultural launchpad.",
+      "brandFit": "high",
+      "bounds": [[52.488, 13.38], [52.51, 13.45]]
+    },
+    {
+      "name": "Mitte",
+      "scores": { "cultural": 76, "retail": 78, "creator": 74, "guerrilla": 72, "ooh": 72 },
+      "stats": { "galleries": 6, "agencies": 4, "venues": 1, "coworking": 4, "retail": 3, "schools": 1, "ubahn_poster": 210, "ubahn_special": 630, "bridge_banner": 8, "street_furniture": 95 },
+      "description": "Premium visibility. Highest gallery concentration. Tourism footfall. Best for flagship brand moments and media-facing activations.",
+      "brandFit": "high",
+      "bounds": [[52.515, 13.37], [52.535, 13.42]]
+    },
+    {
+      "name": "Friedrichshain",
+      "scores": { "cultural": 68, "retail": 52, "creator": 55, "guerrilla": 74, "ooh": 76 },
+      "stats": { "galleries": 1, "agencies": 0, "venues": 3, "coworking": 0, "retail": 0, "schools": 0, "ubahn_poster": 95, "ubahn_special": 310, "bridge_banner": 3, "street_furniture": 48 },
+      "description": "Nightlife and music hub. Strong under-30 demographic. Best for guerrilla activation and experiential events. Lower retail density.",
+      "brandFit": "medium",
+      "bounds": [[52.505, 13.43], [52.52, 13.48]]
+    },
+    {
+      "name": "Neukolln",
+      "scores": { "cultural": 58, "retail": 35, "creator": 52, "guerrilla": 65, "ooh": 48 },
+      "stats": { "galleries": 1, "agencies": 0, "venues": 1, "coworking": 0, "retail": 0, "schools": 0, "ubahn_poster": 72, "ubahn_special": 245, "bridge_banner": 2, "street_furniture": 35 },
+      "description": "Emerging creative cluster. Lower cost for experimentation. Growing design community. Good for early community building before scaling.",
+      "brandFit": "medium",
+      "bounds": [[52.47, 13.42], [52.49, 13.47]]
+    },
+    {
+      "name": "Charlottenburg",
+      "scores": { "cultural": 42, "retail": 65, "creator": 38, "guerrilla": 35, "ooh": 82 },
+      "stats": { "galleries": 0, "agencies": 1, "venues": 0, "coworking": 0, "retail": 1, "schools": 1, "ubahn_poster": 320, "ubahn_special": 890, "bridge_banner": 4, "street_furniture": 98 },
+      "description": "Established premium retail area. Older demographic. UdK design school nearby. Better for retail support than cultural activation. Highest U-Bahn OOH density.",
+      "brandFit": "low",
+      "bounds": [[52.5, 13.29], [52.52, 13.34]]
+    },
+    {
+      "name": "Prenzlauer Berg",
+      "scores": { "cultural": 55, "retail": 58, "creator": 48, "guerrilla": 50, "ooh": 42 },
+      "stats": { "galleries": 0, "agencies": 0, "venues": 0, "coworking": 0, "retail": 1, "schools": 0, "ubahn_poster": 85, "ubahn_special": 280, "bridge_banner": 2, "street_furniture": 40 },
+      "description": "Family-oriented creative area. Design-conscious consumers 30-40. Secondary market for ecosystem retail once Berlin is established.",
+      "brandFit": "medium",
+      "bounds": [[52.535, 13.4], [52.555, 13.44]]
+    }
+  ]
+}

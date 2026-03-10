@@ -1,0 +1,6 @@
+.next
+.next.backup.*
+node_modules
+npm-debug.log*
+.DS_Store
+*.xlsx

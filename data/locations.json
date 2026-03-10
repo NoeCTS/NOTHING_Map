@@ -1,0 +1,68 @@
+{
+  "retail": [
+    { "name": "Saturn Alexanderplatz", "lat": 52.5219, "lng": 13.4132, "area": "Mitte", "type": "saturn" },
+    { "name": "Saturn Europa-Center", "lat": 52.5048, "lng": 13.3371, "area": "Charlottenburg", "type": "saturn" },
+    { "name": "MediaMarkt Alexa", "lat": 52.5115, "lng": 13.4186, "area": "Mitte", "type": "mediamarkt" },
+    { "name": "MediaMarkt Schonhauser", "lat": 52.549, "lng": 13.4141, "area": "Prenzlauer Berg", "type": "mediamarkt" },
+    { "name": "Saturn Mall of Berlin", "lat": 52.5094, "lng": 13.3765, "area": "Mitte", "type": "saturn" },
+    { "name": "MediaMarkt Tegel", "lat": 52.5623, "lng": 13.334, "area": "Charlottenburg", "type": "mediamarkt" },
+    { "name": "Saturn Eastgate", "lat": 52.514, "lng": 13.5278, "area": "Friedrichshain", "type": "saturn" },
+    { "name": "MediaMarkt Steglitz", "lat": 52.4575, "lng": 13.3266, "area": "Charlottenburg", "type": "mediamarkt" }
+  ],
+  "galleries": [
+    { "name": "KW Institute", "lat": 52.5268, "lng": 13.3958, "area": "Mitte" },
+    { "name": "Hamburger Bahnhof", "lat": 52.5282, "lng": 13.3726, "area": "Mitte" },
+    { "name": "Berlinische Galerie", "lat": 52.5036, "lng": 13.4105, "area": "Kreuzberg" },
+    { "name": "Konig Galerie", "lat": 52.4987, "lng": 13.3774, "area": "Kreuzberg" },
+    { "name": "CFA Berlin", "lat": 52.5255, "lng": 13.3931, "area": "Mitte" },
+    { "name": "Spruth Magers", "lat": 52.5241, "lng": 13.3887, "area": "Mitte" },
+    { "name": "Galerie Thomas Schulte", "lat": 52.5063, "lng": 13.3914, "area": "Kreuzberg" },
+    { "name": "Blain|Southern", "lat": 52.5231, "lng": 13.3948, "area": "Mitte" },
+    { "name": "neugerriemschneider", "lat": 52.4994, "lng": 13.4179, "area": "Kreuzberg" },
+    { "name": "Capitain Petzel", "lat": 52.5268, "lng": 13.4015, "area": "Mitte" },
+    { "name": "Kindl Centre", "lat": 52.4754, "lng": 13.4519, "area": "Neukolln" },
+    { "name": "Urban Spree", "lat": 52.5068, "lng": 13.453, "area": "Friedrichshain" }
+  ],
+  "agencies": [
+    { "name": "ACHTUNG! Berlin", "lat": 52.5012, "lng": 13.4152, "area": "Kreuzberg" },
+    { "name": "Demodern", "lat": 52.5035, "lng": 13.4489, "area": "Kreuzberg" },
+    { "name": "Serviceplan Berlin", "lat": 52.5241, "lng": 13.4012, "area": "Mitte" },
+    { "name": "Scholz & Friends", "lat": 52.5218, "lng": 13.4105, "area": "Mitte" },
+    { "name": "Studio Cosmos", "lat": 52.4946, "lng": 13.4225, "area": "Kreuzberg" },
+    { "name": "Bureau Borsche", "lat": 52.501, "lng": 13.4301, "area": "Kreuzberg" },
+    { "name": "Echo Poster", "lat": 52.4998, "lng": 13.4187, "area": "Kreuzberg" },
+    { "name": "MetaDesign", "lat": 52.5155, "lng": 13.3892, "area": "Mitte" },
+    { "name": "DDB Berlin", "lat": 52.5068, "lng": 13.333, "area": "Charlottenburg" },
+    { "name": "Jung von Matt", "lat": 52.5124, "lng": 13.3912, "area": "Mitte" }
+  ],
+  "coworking": [
+    { "name": "Factory Berlin Mitte", "lat": 52.5239, "lng": 13.4129, "area": "Mitte" },
+    { "name": "Factory Berlin Gorlitzer", "lat": 52.4983, "lng": 13.4368, "area": "Kreuzberg" },
+    { "name": "betahaus", "lat": 52.5025, "lng": 13.4188, "area": "Kreuzberg" },
+    { "name": "WeWork Sony Center", "lat": 52.5094, "lng": 13.3744, "area": "Mitte" },
+    { "name": "Ahoy! Berlin", "lat": 52.5012, "lng": 13.4245, "area": "Kreuzberg" },
+    { "name": "rent24 Mitte", "lat": 52.523, "lng": 13.4073, "area": "Mitte" },
+    { "name": "co.up Community", "lat": 52.5003, "lng": 13.4192, "area": "Kreuzberg" },
+    { "name": "Mindspace Berlin", "lat": 52.5195, "lng": 13.3882, "area": "Mitte" }
+  ],
+  "venues": [
+    { "name": "Berghain", "lat": 52.5109, "lng": 13.4429, "area": "Friedrichshain" },
+    { "name": "Tresor", "lat": 52.51, "lng": 13.4186, "area": "Mitte" },
+    { "name": "SchwuZ", "lat": 52.4754, "lng": 13.441, "area": "Neukolln" },
+    { "name": "Watergate", "lat": 52.5014, "lng": 13.4443, "area": "Kreuzberg" },
+    { "name": "SO36", "lat": 52.4999, "lng": 13.4301, "area": "Kreuzberg" },
+    { "name": "Lido", "lat": 52.4966, "lng": 13.4293, "area": "Kreuzberg" },
+    { "name": "Festsaal Kreuzberg", "lat": 52.4946, "lng": 13.4156, "area": "Kreuzberg" },
+    { "name": "Kater Blau", "lat": 52.5115, "lng": 13.4421, "area": "Friedrichshain" },
+    { "name": "//about blank", "lat": 52.5089, "lng": 13.4671, "area": "Friedrichshain" },
+    { "name": "Monarch", "lat": 52.4988, "lng": 13.4261, "area": "Kreuzberg" },
+    { "name": "Silent Green", "lat": 52.5465, "lng": 13.3595, "area": "Wedding" }
+  ],
+  "schools": [
+    { "name": "UdK Berlin", "lat": 52.5076, "lng": 13.3278, "area": "Charlottenburg" },
+    { "name": "Weissensee Academy", "lat": 52.5561, "lng": 13.4653, "area": "Weissensee" },
+    { "name": "HTW Berlin (Design)", "lat": 52.4571, "lng": 13.5261, "area": "Schoneweide" },
+    { "name": "Design Akademie Berlin", "lat": 52.5024, "lng": 13.4198, "area": "Kreuzberg" },
+    { "name": "SRH Berlin (Design)", "lat": 52.5159, "lng": 13.389, "area": "Mitte" }
+  ]
+}

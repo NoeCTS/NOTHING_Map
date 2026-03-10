@@ -1,0 +1,212 @@
+import { LocationCategory, LocationsData, ModeId } from "@/components/types";
+import { LAYER_CONFIG, MODES } from "@/lib/groundSignal";
+
+interface ControlsProps {
+  activeMode: ModeId;
+  gapAnalysisEnabled: boolean;
+  heatmapEnabled: boolean;
+  locations: LocationsData;
+  markersVisible: boolean;
+  radiusOverlay: boolean;
+  visibleLayers: Record<LocationCategory, boolean>;
+  onModeChange: (mode: ModeId) => void;
+  onToggleGapAnalysis: () => void;
+  onToggleHeatmap: () => void;
+  onToggleLayer: (layer: LocationCategory) => void;
+  onToggleMarkers: () => void;
+  onToggleRadiusOverlay: () => void;
+}
+
+const LAYER_STYLE: Record<string, { checkboxClass: string; labelClass: string }> = {
+  accent: { checkboxClass: "accent", labelClass: "" },
+  white: { checkboxClass: "white", labelClass: "" },
+  grey: { checkboxClass: "grey", labelClass: "dim" },
+  orange: { checkboxClass: "orange", labelClass: "" },
+  cyan: { checkboxClass: "cyan", labelClass: "" },
+  yellow: { checkboxClass: "yellow", labelClass: "" },
+  magenta: { checkboxClass: "magenta", labelClass: "" },
+  lime: { checkboxClass: "lime", labelClass: "" },
+};
+
+export function Controls({
+  activeMode,
+  gapAnalysisEnabled,
+  heatmapEnabled,
+  locations,
+  markersVisible,
+  radiusOverlay,
+  visibleLayers,
+  onModeChange,
+  onToggleGapAnalysis,
+  onToggleHeatmap,
+  onToggleLayer,
+  onToggleMarkers,
+  onToggleRadiusOverlay,
+}: ControlsProps) {
+  const totalNodes = Object.values(locations).reduce((sum, arr) => sum + arr.length, 0);
+
+  const baseLayers = LAYER_CONFIG.filter(
+    (layer) => !["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"].includes(layer.id),
+  );
+  const oohLayers = LAYER_CONFIG.filter((layer) =>
+    ["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"].includes(layer.id),
+  );
+
+  return (
+    <aside className="controls-panel">
+      <section className="controls-section">
+        <div className="section-header">
+          <span className="section-header-dot" />
+          <span className="section-kicker">Analysis Mode</span>
+        </div>
+        <div className="mode-stack">
+          {MODES.map((mode) => {
+            const isActive = mode.id === activeMode;
+            return (
+              <button
+                key={mode.id}
+                className={`mode-card${isActive ? " active" : ""}`}
+                onClick={() => onModeChange(mode.id)}
+                type="button"
+              >
+                <div className="mode-card-top">
+                  <span className="mode-card-label">{mode.label}</span>
+                  <div className="mode-dot" />
+                </div>
+                <p className="mode-blurb">{mode.blurb}</p>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="controls-section">
+        <div className="section-header-right">
+          <div className="section-header">
+            <span className="section-header-dot" />
+            <span className="section-kicker">Data Layers</span>
+          </div>
+          <span className="section-node-count">{String(totalNodes).padStart(5, "0")} NODES</span>
+        </div>
+        <div className="layer-stack">
+          {baseLayers.map((layer) => {
+            const style = LAYER_STYLE[layer.color] ?? LAYER_STYLE.grey;
+            return (
+              <label key={layer.id} className="layer-row">
+                <div className="layer-row-left">
+                  <div className={`layer-checkbox ${style.checkboxClass}`}>
+                    <input
+                      checked={visibleLayers[layer.id]}
+                      onChange={() => onToggleLayer(layer.id)}
+                      type="checkbox"
+                    />
+                    <div className="layer-checkbox-box" />
+                    <div className="layer-checkbox-inner" />
+                  </div>
+                  <span className={`layer-label ${style.labelClass}`}>{layer.label}</span>
+                </div>
+                <span className="layer-count">{String(locations[layer.id].length).padStart(2, "0")}</span>
+              </label>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="controls-section">
+        <div className="section-header-right">
+          <div className="section-header">
+            <span className="section-header-dot" />
+            <span className="section-kicker">OOH Media</span>
+          </div>
+          <span className="section-node-count">
+            {String(oohLayers.reduce((sum, layer) => sum + locations[layer.id].length, 0)).padStart(5, "0")} SURFACES
+          </span>
+        </div>
+        <div className="layer-stack">
+          {oohLayers.map((layer) => {
+            const style = LAYER_STYLE[layer.color] ?? LAYER_STYLE.grey;
+            return (
+              <label key={layer.id} className="layer-row">
+                <div className="layer-row-left">
+                  <div className={`layer-checkbox ${style.checkboxClass}`}>
+                    <input
+                      checked={visibleLayers[layer.id]}
+                      onChange={() => onToggleLayer(layer.id)}
+                      type="checkbox"
+                    />
+                    <div className="layer-checkbox-box" />
+                    <div className="layer-checkbox-inner" />
+                  </div>
+                  <span className="layer-label">{layer.label}</span>
+                </div>
+                <span className="layer-count">{String(locations[layer.id].length).padStart(4, "0")}</span>
+              </label>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="controls-section">
+        <div className="section-header-right">
+          <div className="section-header">
+            <span className="section-header-dot" />
+            <span className="section-kicker">Visualization</span>
+          </div>
+          <span className="section-node-count">004 TOGGLES</span>
+        </div>
+        <div className="layer-stack">
+          <VisualizationToggle
+            active={heatmapEnabled}
+            checkboxClass="accent"
+            label="Density Heatmap"
+            onToggle={onToggleHeatmap}
+          />
+          <VisualizationToggle
+            active={!markersVisible}
+            checkboxClass="white"
+            label="Hide Markers"
+            onToggle={onToggleMarkers}
+          />
+          <VisualizationToggle
+            active={radiusOverlay}
+            checkboxClass="white"
+            label="Conversion Radius"
+            onToggle={onToggleRadiusOverlay}
+          />
+          <VisualizationToggle
+            active={gapAnalysisEnabled}
+            checkboxClass="grey"
+            label="Gap Analysis"
+            onToggle={onToggleGapAnalysis}
+          />
+        </div>
+      </section>
+    </aside>
+  );
+}
+
+function VisualizationToggle({
+  active,
+  checkboxClass,
+  label,
+  onToggle,
+}: {
+  active: boolean;
+  checkboxClass: string;
+  label: string;
+  onToggle: () => void;
+}) {
+  return (
+    <label className="layer-row">
+      <div className="layer-row-left">
+        <div className={`layer-checkbox ${checkboxClass}`}>
+          <input checked={active} onChange={onToggle} type="checkbox" />
+          <div className="layer-checkbox-box" />
+          <div className="layer-checkbox-inner" />
+        </div>
+        <span className="layer-label">{label}</span>
+      </div>
+      <span className="layer-count">{active ? "ON" : "OFF"}</span>
+    </label>
+  );
+}
