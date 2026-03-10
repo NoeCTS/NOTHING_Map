@@ -52,7 +52,21 @@ interface GroundSignalAppProps {
   market: MarketDataset;
 }
 
-const DEFAULT_LAYERS: Record<LocationCategory, boolean> = {
+const ALL_LAYERS_ON: Record<LocationCategory, boolean> = {
+  retail: true,
+  galleries: true,
+  agencies: true,
+  coworking: true,
+  venues: true,
+  schools: true,
+  competitors: true,
+  ubahn_poster: true,
+  ubahn_special: true,
+  bridge_banner: true,
+  street_furniture: true,
+};
+
+const LONDON_DEFAULT_LAYERS: Record<LocationCategory, boolean> = {
   retail: true,
   galleries: false,
   agencies: true,
@@ -66,16 +80,16 @@ const DEFAULT_LAYERS: Record<LocationCategory, boolean> = {
   street_furniture: true,
 };
 
-const ALL_VISIBLE_LAYERS: Record<LocationCategory, boolean> = {
-  ...DEFAULT_LAYERS,
-};
+function getDefaultLayers(marketCode: string): Record<LocationCategory, boolean> {
+  return marketCode === "BER" ? ALL_LAYERS_ON : LONDON_DEFAULT_LAYERS;
+}
 
 export function GroundSignalApp({
   market,
 }: GroundSignalAppProps) {
   const { locations, meta, neighbourhoods } = market;
   const [activeMode, setActiveMode] = useState<ModeId>("guerrilla");
-  const [visibleLayers, setVisibleLayers] = useState(DEFAULT_LAYERS);
+  const [visibleLayers, setVisibleLayers] = useState(() => getDefaultLayers(meta.code));
   const [heatmapEnabled, setHeatmapEnabled] = useState(false);
   const [radiusOverlay, setRadiusOverlay] = useState(false);
   const [gapAnalysisEnabled, setGapAnalysisEnabled] = useState(false);
@@ -89,7 +103,7 @@ export function GroundSignalApp({
   const deferredVisibleLayers = useDeferredValue(visibleLayers);
 
   const baselineStats = useMemo(
-    () => computeDynamicStats(neighbourhoods, locations, ALL_VISIBLE_LAYERS, meta),
+    () => computeDynamicStats(neighbourhoods, locations, ALL_LAYERS_ON, meta),
     [locations, meta, neighbourhoods],
   );
 
