@@ -37,7 +37,7 @@ export const MARKET_OPTIONS: { id: MarketId; label: string }[] = [
   { id: "LDN", label: "London" },
 ];
 
-const DEFAULT_MARKET_ID: MarketId = "BER";
+const DEFAULT_MARKET_ID: MarketId = "LDN";
 
 function mergeLocations(
   locations: Omit<LocationsData, "ubahn_poster" | "ubahn_special" | "bridge_banner" | "street_furniture">,

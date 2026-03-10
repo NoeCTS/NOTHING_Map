@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Controls } from "@/components/Controls";
 import { Header } from "@/components/Header";
 import { Recommendations } from "@/components/Recommendations";
+import { Tutorial } from "@/components/Tutorial";
 import {
   ComputedRoute,
   HeatmapPoint,
@@ -378,6 +379,8 @@ export function GroundSignalApp({
           />
         ) : null}
       </main>
+
+      <Tutorial />
     </div>
   );
 }
