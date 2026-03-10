@@ -217,5 +217,11 @@ export const DATA_SOURCE_META: Record<
     updatedAt: "2026-03-10",
     confidence: "medium",
     note: "Street-level OOH proxy focused on kiosks, phone hubs, totems, and signage surfaces."
+  },
+  competitors: {
+    source: "Manual competitor store mapping",
+    updatedAt: "2026-03-10",
+    confidence: "high",
+    note: "Apple, Samsung, Google, and OnePlus flagship store locations in London."
   }
 };

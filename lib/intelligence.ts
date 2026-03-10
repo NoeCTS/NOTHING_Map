@@ -117,6 +117,7 @@ export function buildAggregateDataQuality(
       coworking: 0,
       retail: 0,
       schools: 0,
+      competitors: 0,
       ubahn_poster: 0,
       ubahn_special: 0,
       bridge_banner: 0,

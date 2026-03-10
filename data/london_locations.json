@@ -55,6 +55,13 @@
       "lng": -0.1528,
       "area": "West End",
       "type": "department_store"
+    },
+    {
+      "name": "Nothing Store Soho",
+      "lat": 51.512903,
+      "lng": -0.134006,
+      "area": "West End",
+      "type": "nothing_store"
     }
   ],
   "galleries": [
@@ -633,7 +640,7 @@
       "district": "Richmond upon Thames"
     },
     {
-      "name": "KÖNIG London",
+      "name": "K\u00d6NIG London",
       "lat": 51.518231,
       "lng": -0.166788,
       "area": "Camden",
@@ -1846,7 +1853,7 @@
       "plz": "E2 6JT"
     },
     {
-      "name": "John WesleyÊ¼s House and The Museum of Methodism",
+      "name": "John Wesley\u00ca\u00bcs House and The Museum of Methodism",
       "lat": 51.523076,
       "lng": -0.085461,
       "area": "Shoreditch",
@@ -2094,7 +2101,7 @@
       "plz": "E2 9PF"
     },
     {
-      "name": "Wesleyâ€™s Chapel, Museum of Methodism and John Wesle",
+      "name": "Wesley\u00e2\u20ac\u2122s Chapel, Museum of Methodism and John Wesle",
       "lat": 51.523256,
       "lng": -0.084934,
       "area": "Shoreditch",
@@ -2209,7 +2216,7 @@
       "district": "Tower Hamlets"
     },
     {
-      "name": "CØPPERFIELD",
+      "name": "C\u00d8PPERFIELD",
       "lat": 51.503167,
       "lng": -0.097293,
       "area": "South Bank",
@@ -3762,7 +3769,7 @@
       "district": "Westminster"
     },
     {
-      "name": "SprÃ¼th Magers",
+      "name": "Spr\u00c3\u00bcth Magers",
       "lat": 51.509481,
       "lng": -0.142168,
       "area": "West End",
@@ -4481,7 +4488,7 @@
       "district": "Inferred central placement"
     },
     {
-      "name": "Carréducker London Limited",
+      "name": "Carr\u00e9ducker London Limited",
       "lat": 51.508453,
       "lng": -0.108308,
       "area": "South Bank",
@@ -8248,7 +8255,7 @@
       "district": "Bexley"
     },
     {
-      "name": "Everyone’s Warehouse",
+      "name": "Everyone\u2019s Warehouse",
       "lat": 51.525217,
       "lng": 0.113827,
       "area": "Stratford",
@@ -10482,7 +10489,7 @@
       "district": "Lewisham"
     },
     {
-      "name": "The CLF Art Café",
+      "name": "The CLF Art Caf\u00e9",
       "lat": 51.470421,
       "lng": -0.069825,
       "area": "Peckham",
@@ -12454,6 +12461,71 @@
       "lat": 51.5008,
       "lng": -0.1775,
       "area": "West End"
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Apple Regent Street",
+      "lat": 51.5108,
+      "lng": -0.1398,
+      "area": "West End",
+      "type": "apple"
+    },
+    {
+      "name": "Apple Covent Garden",
+      "lat": 51.5117,
+      "lng": -0.1244,
+      "area": "West End",
+      "type": "apple"
+    },
+    {
+      "name": "Apple Battersea Power Station",
+      "lat": 51.4799,
+      "lng": -0.1432,
+      "area": "South Bank",
+      "type": "apple"
+    },
+    {
+      "name": "Apple Brompton Road",
+      "lat": 51.4968,
+      "lng": -0.1692,
+      "area": "West End",
+      "type": "apple"
+    },
+    {
+      "name": "Apple Stratford City",
+      "lat": 51.5434,
+      "lng": -0.0064,
+      "area": "Stratford",
+      "type": "apple"
+    },
+    {
+      "name": "Samsung Experience Store Westfield",
+      "lat": 51.5072,
+      "lng": -0.2202,
+      "area": "West End",
+      "type": "samsung"
+    },
+    {
+      "name": "Samsung KX Kings Cross",
+      "lat": 51.5359,
+      "lng": -0.1262,
+      "area": "King's Cross",
+      "type": "samsung"
+    },
+    {
+      "name": "Google Store London",
+      "lat": 51.5117,
+      "lng": -0.1244,
+      "area": "West End",
+      "type": "google"
+    },
+    {
+      "name": "OnePlus Selfridges",
+      "lat": 51.5145,
+      "lng": -0.1528,
+      "area": "West End",
+      "type": "oneplus"
     }
   ]
 }

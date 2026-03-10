@@ -7,6 +7,7 @@ import {
   CircleMarker,
   MapContainer,
   Marker,
+  Polyline,
   TileLayer,
   Tooltip,
   ZoomControl,
@@ -15,6 +16,7 @@ import {
 } from "react-leaflet";
 import { HeatmapLayer } from "@/components/HeatmapLayer";
 import {
+  ComputedRoute,
   HeatmapPoint,
   LocationCategory,
   LocationPoint,
@@ -23,12 +25,16 @@ import {
   ModeId,
   Neighbourhood,
   OOHCategory,
+  RouteSummary,
+  RouteWaypoint,
 } from "@/components/types";
 import { categoryLabel, getModes } from "@/lib/groundSignal";
+import { formatRouteDistance, formatTravelMinutes } from "@/lib/routePlanner";
 import { resolvePointZone } from "@/lib/spatial";
 
 interface GroundSignalMapProps {
   activeMode: ModeId;
+  computedRoute: ComputedRoute | null;
   gapAnalysisEnabled: boolean;
   heatmapEnabled: boolean;
   heatmapPoints: HeatmapPoint[];
@@ -37,8 +43,12 @@ interface GroundSignalMapProps {
   markersVisible: boolean;
   neighbourhoods: Neighbourhood[];
   radiusOverlay: boolean;
-  selectedZoneName: string;
+  routeLoading: boolean;
+  routePlannerEnabled: boolean;
+  routeSummary: RouteSummary;
+  routeWaypoints: RouteWaypoint[];
   visibleLayers: Record<LocationCategory, boolean>;
+  onAddWaypoint: (waypoint: RouteWaypoint) => void;
   onSelectZone: (zoneName: string) => void;
 }
 
@@ -49,6 +59,7 @@ const MARKER_CLASSNAME: Record<LocationCategory, string> = {
   coworking: "marker-secondary",
   venues: "marker-secondary",
   schools: "marker-secondary",
+  competitors: "marker-competitor",
   ubahn_poster: "marker-ooh-poster",
   ubahn_special: "marker-ooh-special",
   bridge_banner: "marker-ooh-bridge",
@@ -65,6 +76,7 @@ const BASE_ICON_CATEGORIES: Exclude<LocationCategory, OOHCategory>[] = [
   "coworking",
   "venues",
   "schools",
+  "competitors",
 ];
 
 const OOH_STYLE: Record<
@@ -122,6 +134,7 @@ interface AggregatedOohPoint extends RenderPoint {
 
 export const GroundSignalMap = memo(function GroundSignalMap({
   activeMode,
+  computedRoute,
   heatmapEnabled,
   heatmapPoints,
   locations,
@@ -129,7 +142,12 @@ export const GroundSignalMap = memo(function GroundSignalMap({
   markersVisible,
   neighbourhoods,
   radiusOverlay,
+  routeLoading,
+  routePlannerEnabled,
+  routeSummary,
+  routeWaypoints,
   visibleLayers,
+  onAddWaypoint,
   onSelectZone,
 }: GroundSignalMapProps) {
   const icons = useMemo(() => {
@@ -144,8 +162,29 @@ export const GroundSignalMap = memo(function GroundSignalMap({
       return accumulator;
     }, {} as Record<Exclude<LocationCategory, OOHCategory>, L.DivIcon>);
   }, []);
+  const nothingStoreIcon = useMemo(
+    () =>
+      L.divIcon({
+        className: "signal-marker-shell",
+        html: '<span class="map-marker marker-nothing-store"></span>',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11],
+      }),
+    [],
+  );
 
   const modeMeta = getModes(market).find((mode) => mode.id === activeMode);
+  const routeSummaryLabel = useMemo(() => {
+    if (routeLoading && routeWaypoints.length > 1) {
+      return "Calculating walking route...";
+    }
+
+    if (routeWaypoints.length < 2) {
+      return `${routeWaypoints.length} waypoint${routeWaypoints.length === 1 ? "" : "s"} selected`;
+    }
+
+    return `${routeWaypoints.length} waypoints · ${formatRouteDistance(routeSummary.totalDistanceMeters)} · ${formatTravelMinutes(routeSummary.walkingMinutes)} walk`;
+  }, [routeLoading, routeSummary.totalDistanceMeters, routeSummary.walkingMinutes, routeWaypoints.length]);
 
   return (
     <div className="map-panel">
@@ -163,6 +202,18 @@ export const GroundSignalMap = memo(function GroundSignalMap({
       </div>
 
       <div className="map-coords">{market.coordsLabel}</div>
+
+      {routePlannerEnabled ? (
+        <div className="route-map-overlay glass-panel">
+          <div className="route-map-kicker">Route Planner</div>
+          <div className="route-map-summary">{routeSummaryLabel}</div>
+          <p className="route-map-copy">
+            {computedRoute?.provider === "osrm"
+              ? "The line reflects a routed walking path rather than a straight corridor."
+              : "If OSRM is unavailable, the planner falls back to a straight-line estimate."}
+          </p>
+        </div>
+      ) : null}
 
       <div className="map-crosshair">
         <div className="map-crosshair-h" />
@@ -222,9 +273,48 @@ export const GroundSignalMap = memo(function GroundSignalMap({
             market={market}
             markersVisible={markersVisible}
             neighbourhoods={neighbourhoods}
+            nothingStoreIcon={nothingStoreIcon}
+            routePlannerEnabled={routePlannerEnabled}
+            routeWaypoints={routeWaypoints}
             visibleLayers={visibleLayers}
+            onAddWaypoint={onAddWaypoint}
             onSelectZone={onSelectZone}
           />
+
+          {routeWaypoints.length > 1 ? (
+            <Polyline
+              pathOptions={{
+                color: "#22D3EE",
+                dashArray: "10 8",
+                lineCap: "round",
+                lineJoin: "round",
+                opacity: 0.9,
+                weight: 4,
+              }}
+              positions={
+                computedRoute?.path.length
+                  ? computedRoute.path.map((point) => [point.lat, point.lng] as [number, number])
+                  : routeWaypoints.map((waypoint) => [waypoint.lat, waypoint.lng] as [number, number])
+              }
+            />
+          ) : null}
+
+          {routeWaypoints.map((waypoint, index) => (
+            <Marker
+              key={`route-waypoint-${waypoint.id}`}
+              icon={createRouteWaypointIcon(index + 1)}
+              position={[waypoint.lat, waypoint.lng]}
+            >
+              <Tooltip direction="top" opacity={1}>
+                <div className="map-tooltip">
+                  <strong>
+                    {String(index + 1).padStart(2, "0")} {waypoint.name}
+                  </strong>
+                  <span>{categoryLabel(waypoint.category, market)}</span>
+                </div>
+              </Tooltip>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
     </div>
@@ -238,7 +328,11 @@ const ZoomAwareMarkers = memo(function ZoomAwareMarkers({
   market,
   markersVisible,
   neighbourhoods,
+  nothingStoreIcon,
+  routePlannerEnabled,
+  routeWaypoints,
   visibleLayers,
+  onAddWaypoint,
   onSelectZone,
 }: {
   heatmapEnabled: boolean;
@@ -247,11 +341,19 @@ const ZoomAwareMarkers = memo(function ZoomAwareMarkers({
   market: MarketMeta;
   markersVisible: boolean;
   neighbourhoods: Neighbourhood[];
+  nothingStoreIcon: L.DivIcon;
+  routePlannerEnabled: boolean;
+  routeWaypoints: RouteWaypoint[];
   visibleLayers: Record<LocationCategory, boolean>;
+  onAddWaypoint: (waypoint: RouteWaypoint) => void;
   onSelectZone: (zoneName: string) => void;
 }) {
   const map = useMap();
   const [viewport, setViewport] = useState<ViewportState>(() => getViewportState(map));
+  const selectedWaypointIds = useMemo(
+    () => new Set(routeWaypoints.map((waypoint) => waypoint.id)),
+    [routeWaypoints],
+  );
 
   useMapEvents({
     zoomend: (event) => {
@@ -308,22 +410,30 @@ const ZoomAwareMarkers = memo(function ZoomAwareMarkers({
         <Marker
           key={key}
           eventHandlers={{
-            click: () => {
+              click: () => {
+                if (routePlannerEnabled) {
+                  onAddWaypoint(buildRouteWaypoint(category, key, point, zoneName));
+                  return;
+                }
+
               if (zoneName) {
                 onSelectZone(zoneName);
               }
             },
           }}
-          icon={icons[category as Exclude<LocationCategory, OOHCategory>]}
+          icon={point.type === "nothing_store" ? nothingStoreIcon : icons[category as Exclude<LocationCategory, OOHCategory>]}
           opacity={heatmapEnabled ? 0.24 : 1}
           position={[point.lat, point.lng]}
         >
-              <Tooltip direction="top" opacity={1}>
-                <div className="map-tooltip">
-                  <strong>{point.name}</strong>
-                  <span>{categoryLabel(category, market)}</span>
-                </div>
-              </Tooltip>
+          <Tooltip direction="top" opacity={1}>
+            <div className="map-tooltip">
+              <strong>{point.name}</strong>
+              <span>
+                {point.type === "nothing_store" ? "Nothing Store / Own Retail" : categoryLabel(category, market)}
+                {selectedWaypointIds.has(key) ? " / ROUTE" : ""}
+              </span>
+            </div>
+          </Tooltip>
         </Marker>
       ))}
 
@@ -336,6 +446,11 @@ const ZoomAwareMarkers = memo(function ZoomAwareMarkers({
             center={[point.lat, point.lng]}
             eventHandlers={{
               click: () => {
+                if (routePlannerEnabled && aggregateCount === 1) {
+                  onAddWaypoint(buildRouteWaypoint(category, key, point, zoneName));
+                  return;
+                }
+
                 if (zoneName) {
                   onSelectZone(zoneName);
                 }
@@ -354,7 +469,11 @@ const ZoomAwareMarkers = memo(function ZoomAwareMarkers({
               <Tooltip direction="top" opacity={1}>
                 <div className="map-tooltip">
                   <strong>{aggregateCount > 1 ? `${point.name} x${aggregateCount}` : point.name}</strong>
-                  <span>{categoryLabel(category, market)}</span>
+                  <span>
+                    {categoryLabel(category, market)}
+                    {selectedWaypointIds.has(key) ? " / ROUTE" : ""}
+                    {routePlannerEnabled && aggregateCount > 1 ? " / ZOOM IN TO ROUTE" : ""}
+                  </span>
                 </div>
               </Tooltip>
             ) : null}
@@ -468,6 +587,31 @@ function getOohRadius(category: OOHCategory, aggregateCount: number, heatmapEnab
   const densityBoost = aggregateCount > 1 ? Math.min(2.6, 1 + Math.log2(aggregateCount) * 0.45) : 1;
   const heatmapScale = heatmapEnabled ? 0.88 : 1;
   return baseRadius * densityBoost * heatmapScale;
+}
+
+function buildRouteWaypoint(
+  category: LocationCategory,
+  key: string,
+  point: LocationPoint,
+  zoneName: string | null,
+): RouteWaypoint {
+  return {
+    category,
+    id: key,
+    lat: point.lat,
+    lng: point.lng,
+    name: point.name,
+    zoneName: zoneName ?? undefined,
+  };
+}
+
+function createRouteWaypointIcon(order: number) {
+  return L.divIcon({
+    className: "route-waypoint-shell",
+    html: `<span class="route-waypoint-badge">${order}</span>`,
+    iconAnchor: [12, 12],
+    iconSize: [24, 24],
+  });
 }
 
 function isPointInsideViewport(point: LocationPoint, viewport: ViewportState) {

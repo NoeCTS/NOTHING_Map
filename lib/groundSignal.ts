@@ -48,7 +48,7 @@ const BASE_MODES: { id: ModeId; label: string; blurb: string }[] = [
 const BASE_LAYER_CONFIG: {
   id: LocationCategory;
   label: string;
-  color: "accent" | "white" | "grey" | "orange" | "cyan" | "yellow" | "magenta" | "lime";
+  color: "accent" | "white" | "grey" | "orange" | "cyan" | "yellow" | "magenta" | "lime" | "blue";
 }[] = [
   { id: "retail", label: "Retail", color: "accent" },
   { id: "galleries", label: "Galleries", color: "white" },
@@ -56,6 +56,7 @@ const BASE_LAYER_CONFIG: {
   { id: "coworking", label: "Coworking", color: "grey" },
   { id: "venues", label: "Venues", color: "grey" },
   { id: "schools", label: "Design Schools", color: "grey" },
+  { id: "competitors", label: "Competitors", color: "blue" },
   { id: "ubahn_poster", label: "Posters", color: "orange" },
   { id: "ubahn_special", label: "Premium", color: "magenta" },
   { id: "bridge_banner", label: "Bridge", color: "cyan" },
@@ -742,6 +743,7 @@ function createEmptyStats(): NeighbourhoodStats {
     coworking: 0,
     retail: 0,
     schools: 0,
+    competitors: 0,
     ubahn_poster: 0,
     ubahn_special: 0,
     bridge_banner: 0,

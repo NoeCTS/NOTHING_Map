@@ -8,6 +8,7 @@ export type LocationCategory =
   | "coworking"
   | "venues"
   | "schools"
+  | "competitors"
   | "ubahn_poster"
   | "ubahn_special"
   | "bridge_banner"
@@ -38,6 +39,7 @@ export interface LocationsData {
   coworking: LocationPoint[];
   venues: LocationPoint[];
   schools: LocationPoint[];
+  competitors: LocationPoint[];
   ubahn_poster: LocationPoint[];
   ubahn_special: LocationPoint[];
   bridge_banner: LocationPoint[];
@@ -59,6 +61,7 @@ export interface NeighbourhoodStats {
   coworking: number;
   retail: number;
   schools: number;
+  competitors: number;
   ubahn_poster: number;
   ubahn_special: number;
   bridge_banner: number;
@@ -167,6 +170,70 @@ export interface HeatmapPoint {
   lat: number;
   lng: number;
   intensity: number;
+}
+
+export interface RouteWaypoint {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  category: LocationCategory;
+  zoneName?: string;
+}
+
+export interface RoutePathPoint {
+  lat: number;
+  lng: number;
+}
+
+export interface RouteLeg {
+  distanceMeters: number;
+  from: RouteWaypoint;
+  to: RouteWaypoint;
+  durationSeconds?: number;
+}
+
+export interface RouteSummary {
+  categoryCounts: Partial<Record<LocationCategory, number>>;
+  legs: RouteLeg[];
+  stopCount: number;
+  totalDistanceMeters: number;
+  uniqueZones: string[];
+  walkingMinutes: number;
+}
+
+export interface ComputedRouteLeg {
+  distanceMeters: number;
+  durationSeconds: number;
+  path: RoutePathPoint[];
+}
+
+export interface ComputedRoute {
+  distanceMeters: number;
+  durationSeconds: number;
+  legs: ComputedRouteLeg[];
+  mode: "walk";
+  path: RoutePathPoint[];
+  provider: "fallback" | "osrm";
+  reason?: string;
+}
+
+export interface RouteOohEncounter {
+  category: OOHCategory;
+  distanceMeters: number;
+  impressions: number;
+  lat: number;
+  legIndex: number;
+  lng: number;
+  name: string;
+}
+
+export interface RouteOohAnalysis {
+  bufferMeters: number;
+  counts: Partial<Record<OOHCategory, number>>;
+  hits: RouteOohEncounter[];
+  totalEstimatedImpressions: number;
+  totalHits: number;
 }
 
 export interface ScenarioSnapshot {

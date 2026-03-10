@@ -16,6 +16,7 @@ interface ControlsProps {
   radiusOverlay: boolean;
   visibleLayers: Record<LocationCategory, boolean>;
   onModeChange: (mode: ModeId) => void;
+  onSetLayerGroup: (layers: LocationCategory[], enabled: boolean) => void;
   onToggleGapAnalysis: () => void;
   onToggleHeatmap: () => void;
   onToggleLayer: (layer: LocationCategory) => void;
@@ -32,6 +33,7 @@ const LAYER_STYLE: Record<string, { checkboxClass: string; labelClass: string }>
   yellow: { checkboxClass: "yellow", labelClass: "" },
   magenta: { checkboxClass: "magenta", labelClass: "" },
   lime: { checkboxClass: "lime", labelClass: "" },
+  blue: { checkboxClass: "blue", labelClass: "" },
 };
 
 export function Controls({
@@ -44,6 +46,7 @@ export function Controls({
   radiusOverlay,
   visibleLayers,
   onModeChange,
+  onSetLayerGroup,
   onToggleGapAnalysis,
   onToggleHeatmap,
   onToggleLayer,
@@ -61,6 +64,8 @@ export function Controls({
   const oohLayers = layerConfig.filter((layer) =>
     ["ubahn_poster", "ubahn_special", "bridge_banner", "street_furniture"].includes(layer.id),
   );
+  const areBaseLayersEnabled = baseLayers.every((layer) => visibleLayers[layer.id]);
+  const areOohLayersEnabled = oohLayers.every((layer) => visibleLayers[layer.id]);
 
   return (
     <aside className="controls-panel">
@@ -97,7 +102,21 @@ export function Controls({
             <span className="section-header-dot" />
             <span className="section-kicker">Data Layers</span>
           </div>
-          <span className="section-node-count">{String(totalNodes).padStart(5, "0")} NODES</span>
+          <div className="section-header-tools">
+            <button
+              className="segment-toggle-btn"
+              onClick={() =>
+                onSetLayerGroup(
+                  baseLayers.map((layer) => layer.id),
+                  !areBaseLayersEnabled,
+                )
+              }
+              type="button"
+            >
+              {areBaseLayersEnabled ? "Hide all" : "Show all"}
+            </button>
+            <span className="section-node-count">{String(totalNodes).padStart(5, "0")} NODES</span>
+          </div>
         </div>
         <div className="layer-stack">
           {baseLayers.map((layer) => {
@@ -129,9 +148,23 @@ export function Controls({
             <span className="section-header-dot" />
             <span className="section-kicker">OOH Media</span>
           </div>
-          <span className="section-node-count">
-            {String(oohLayers.reduce((sum, layer) => sum + locations[layer.id].length, 0)).padStart(5, "0")} SURFACES
-          </span>
+          <div className="section-header-tools">
+            <button
+              className="segment-toggle-btn"
+              onClick={() =>
+                onSetLayerGroup(
+                  oohLayers.map((layer) => layer.id),
+                  !areOohLayersEnabled,
+                )
+              }
+              type="button"
+            >
+              {areOohLayersEnabled ? "Hide all" : "Show all"}
+            </button>
+            <span className="section-node-count">
+              {String(oohLayers.reduce((sum, layer) => sum + locations[layer.id].length, 0)).padStart(5, "0")} SURFACES
+            </span>
+          </div>
         </div>
         <div className="layer-stack">
           {oohLayers.map((layer) => {

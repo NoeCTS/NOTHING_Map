@@ -140,4 +140,10 @@ export const DATA_SOURCE_META: Record<
     confidence: "medium",
     note: "Inventory weighted with default street-level exposure when station mapping is unavailable.",
   },
+  competitors: {
+    source: "Manual competitor store mapping",
+    updatedAt: DATA_REFRESH_DATE,
+    confidence: "high",
+    note: "Apple, Samsung, and Google flagship store locations in the Berlin market.",
+  },
 };

@@ -6,12 +6,14 @@ import { Controls } from "@/components/Controls";
 import { Header } from "@/components/Header";
 import { Recommendations } from "@/components/Recommendations";
 import {
+  ComputedRoute,
   HeatmapPoint,
   LocationCategory,
   LocationPoint,
   MarketDataset,
   ModeId,
   Recommendation,
+  RouteWaypoint,
 } from "@/components/types";
 import { computeGapAnalysis } from "@/lib/gapAnalysis";
 import {
@@ -24,6 +26,12 @@ import {
   rankNeighbourhoods,
 } from "@/lib/groundSignal";
 import { buildDataQualitySummary, buildScoreExplanation } from "@/lib/intelligence";
+import {
+  analyzeRouteOohCorridor,
+  buildFallbackComputedRoute,
+  optimizeRouteWaypoints,
+  summarizeRoute,
+} from "@/lib/routePlanner";
 
 const GroundSignalMap = dynamic(
   () => import("@/components/Map").then((module) => module.GroundSignalMap),
@@ -50,6 +58,7 @@ const DEFAULT_LAYERS: Record<LocationCategory, boolean> = {
   coworking: true,
   venues: true,
   schools: true,
+  competitors: true,
   ubahn_poster: true,
   ubahn_special: true,
   bridge_banner: true,
@@ -70,6 +79,10 @@ export function GroundSignalApp({
   const [radiusOverlay, setRadiusOverlay] = useState(false);
   const [gapAnalysisEnabled, setGapAnalysisEnabled] = useState(false);
   const [markersVisible, setMarkersVisible] = useState(true);
+  const [routePlannerEnabled, setRoutePlannerEnabled] = useState(false);
+  const [routeWaypoints, setRouteWaypoints] = useState<RouteWaypoint[]>([]);
+  const [computedRoute, setComputedRoute] = useState<ComputedRoute | null>(null);
+  const [routeLoading, setRouteLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<Recommendation | null>(null);
   const deferredActiveMode = useDeferredValue(activeMode);
   const deferredVisibleLayers = useDeferredValue(visibleLayers);
@@ -145,6 +158,53 @@ export function GroundSignalApp({
     setRecommendation(null);
   }, [activeMode, gapAnalysisEnabled, meta.code, radiusOverlay, visibleLayers]);
 
+  useEffect(() => {
+    if (routeWaypoints.length < 2) {
+      setComputedRoute(null);
+      setRouteLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    setRouteLoading(true);
+
+    fetch("/api/walking-route", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        waypoints: routeWaypoints,
+      }),
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("walking_route_failed");
+        }
+
+        return response.json() as Promise<{ route?: ComputedRoute }>;
+      })
+      .then((data) => {
+        if (!controller.signal.aborted) {
+          setComputedRoute(data.route ?? buildFallbackComputedRoute(routeWaypoints));
+        }
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setComputedRoute(buildFallbackComputedRoute(routeWaypoints));
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setRouteLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [routeWaypoints]);
+
   const selectedZone =
     ranked.find((zone) => zone.name === selectedZoneName) ?? ranked[0];
 
@@ -196,6 +256,25 @@ export function GroundSignalApp({
       };
     });
   }, [deferredActiveMode, deferredVisibleLayers, locations, meta]);
+  const routeSummary = useMemo(
+    () => summarizeRoute(routeWaypoints, computedRoute),
+    [computedRoute, routeWaypoints],
+  );
+  const routeOohAnalysis = useMemo(
+    () => analyzeRouteOohCorridor(routeWaypoints, locations, deferredVisibleLayers, meta, computedRoute),
+    [computedRoute, deferredVisibleLayers, locations, meta, routeWaypoints],
+  );
+  const optimizedRouteWaypoints = useMemo(() => optimizeRouteWaypoints(routeWaypoints), [routeWaypoints]);
+  const currentLinearRouteSummary = useMemo(() => summarizeRoute(routeWaypoints), [routeWaypoints]);
+  const optimizedRouteSummary = useMemo(() => summarizeRoute(optimizedRouteWaypoints), [optimizedRouteWaypoints]);
+  const optimizationGainMeters = Math.max(
+    0,
+    currentLinearRouteSummary.totalDistanceMeters - optimizedRouteSummary.totalDistanceMeters,
+  );
+  const canOptimizeRoute =
+    routeWaypoints.length > 2 &&
+    optimizationGainMeters >= 100 &&
+    !isSameWaypointOrder(routeWaypoints, optimizedRouteWaypoints);
 
   return (
     <div className="app-shell">
@@ -226,6 +305,19 @@ export function GroundSignalApp({
           }}
           onToggleMarkers={() => setMarkersVisible((current) => !current)}
           onToggleRadiusOverlay={() => setRadiusOverlay((current) => !current)}
+          onSetLayerGroup={(layers, enabled) => {
+            startTransition(() => {
+              setVisibleLayers((current) => {
+                const next = { ...current };
+
+                layers.forEach((layer) => {
+                  next[layer] = enabled;
+                });
+
+                return next;
+              });
+            });
+          }}
           radiusOverlay={radiusOverlay}
           visibleLayers={visibleLayers}
         />
@@ -239,20 +331,49 @@ export function GroundSignalApp({
           market={meta}
           markersVisible={markersVisible}
           neighbourhoods={ranked}
+          computedRoute={computedRoute}
           onSelectZone={setSelectedZoneName}
           radiusOverlay={radiusOverlay}
-          selectedZoneName={selectedZoneName}
+          routeLoading={routeLoading}
+          routePlannerEnabled={routePlannerEnabled}
+          routeSummary={routeSummary}
+          routeWaypoints={routeWaypoints}
+          onAddWaypoint={(waypoint) => {
+            setRouteWaypoints((current) => {
+              const exists = current.some((w) => w.id === waypoint.id);
+              if (exists) {
+                return current.filter((w) => w.id !== waypoint.id);
+              }
+              return [...current, waypoint];
+            });
+          }}
           visibleLayers={deferredVisibleLayers}
         />
 
         {selectedZone ? (
           <Recommendations
             activeMode={activeMode}
+            canOptimizeRoute={canOptimizeRoute}
+            computedRoute={computedRoute}
             market={meta}
             neighbourhoods={ranked}
+            optimizationGainMeters={optimizationGainMeters}
             onGenerate={() => setRecommendation(buildRecommendation(activeMode, ranked, meta, selectedZone))}
+            onClearRoute={() => setRouteWaypoints([])}
+            onDisableRoutePlanner={() => setRoutePlannerEnabled(false)}
+            onEnableRoutePlanner={() => setRoutePlannerEnabled(true)}
+            onOptimizeRoute={() => setRouteWaypoints(optimizedRouteWaypoints)}
+            onRemoveRouteWaypoint={(waypointId) => {
+              setRouteWaypoints((current) => current.filter((waypoint) => waypoint.id !== waypointId));
+            }}
+            onReverseRoute={() => setRouteWaypoints((current) => [...current].reverse())}
             onSelectZone={setSelectedZoneName}
             recommendation={recommendation}
+            routeLoading={routeLoading}
+            routeOohAnalysis={routeOohAnalysis}
+            routePlannerEnabled={routePlannerEnabled}
+            routeSummary={routeSummary}
+            routeWaypoints={routeWaypoints}
             selectedZone={selectedZone}
           />
         ) : null}
@@ -283,4 +404,8 @@ function getHeatIntensity(
   }
 
   return isOohCategory(category) ? 0.22 : 0.32;
+}
+
+function isSameWaypointOrder(left: RouteWaypoint[], right: RouteWaypoint[]) {
+  return left.length === right.length && left.every((waypoint, index) => waypoint.id === right[index]?.id);
 }
