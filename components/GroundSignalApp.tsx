@@ -76,7 +76,7 @@ export function GroundSignalApp({
   const { locations, meta, neighbourhoods } = market;
   const [activeMode, setActiveMode] = useState<ModeId>("guerrilla");
   const [visibleLayers, setVisibleLayers] = useState(DEFAULT_LAYERS);
-  const [heatmapEnabled, setHeatmapEnabled] = useState(true);
+  const [heatmapEnabled, setHeatmapEnabled] = useState(false);
   const [radiusOverlay, setRadiusOverlay] = useState(false);
   const [gapAnalysisEnabled, setGapAnalysisEnabled] = useState(false);
   const [markersVisible, setMarkersVisible] = useState(true);
