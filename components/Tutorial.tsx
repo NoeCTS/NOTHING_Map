@@ -6,7 +6,7 @@ const TUTORIAL_STEPS = [
   {
     title: "Welcome to Ground Signal",
     description:
-      "Location intelligence for Nothing. Find the best zones for activations, OOH campaigns, and guerrilla marketing across Berlin and London.",
+      "Location intelligence platform. Find the best zones for activations, OOH campaigns, and guerrilla marketing across Berlin and London.",
     highlight: null,
   },
   {

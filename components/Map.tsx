@@ -49,7 +49,10 @@ interface GroundSignalMapProps {
   routeWaypoints: RouteWaypoint[];
   visibleLayers: Record<LocationCategory, boolean>;
   onAddWaypoint: (waypoint: RouteWaypoint) => void;
+  onResetLayers: () => void;
   onSelectZone: (zoneName: string) => void;
+  onToggleHeatmap: () => void;
+  onToggleRoutePlanner: () => void;
 }
 
 const MARKER_CLASSNAME: Record<LocationCategory, string> = {
@@ -148,7 +151,10 @@ export const GroundSignalMap = memo(function GroundSignalMap({
   routeWaypoints,
   visibleLayers,
   onAddWaypoint,
+  onResetLayers,
   onSelectZone,
+  onToggleHeatmap,
+  onToggleRoutePlanner,
 }: GroundSignalMapProps) {
   const icons = useMemo(() => {
     return BASE_ICON_CATEGORIES.reduce((accumulator, category) => {
@@ -316,6 +322,44 @@ export const GroundSignalMap = memo(function GroundSignalMap({
             </Marker>
           ))}
         </MapContainer>
+      </div>
+
+      <div className="map-quick-actions">
+        <button
+          className={`quick-action-btn${heatmapEnabled ? " active" : ""}`}
+          onClick={onToggleHeatmap}
+          title="Toggle Heatmap"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <span>Heat</span>
+        </button>
+        <button
+          className={`quick-action-btn${routePlannerEnabled ? " active" : ""}`}
+          onClick={onToggleRoutePlanner}
+          title="Toggle Route Planner"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 12h4l3-9 4 18 3-9h4" />
+          </svg>
+          <span>Route</span>
+        </button>
+        <button
+          className="quick-action-btn"
+          onClick={onResetLayers}
+          title="Reset Layers"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          <span>Reset</span>
+        </button>
       </div>
     </div>
   );
@@ -511,7 +555,7 @@ function buildRenderPoints({
   const markers: RenderPoint[] = [];
 
   categories.forEach((category) => {
-    if (!visibleLayers[category]) {
+    if (!visibleLayers[category] || !locations[category]) {
       return;
     }
 

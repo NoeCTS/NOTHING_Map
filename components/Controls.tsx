@@ -101,11 +101,21 @@ export function Controls({
               : mode.id === "creator" ? "Creator"
               : mode.id === "guerrilla" ? "Guerrilla"
               : "OOH";
+            const modeDescription = mode.id === "cultural"
+              ? "Art galleries, creative agencies, cultural venues - ideal for brand positioning near cultural hotspots"
+              : mode.id === "retail"
+              ? "Retail density, shopping areas, footfall zones - optimal for product launches and direct sales"
+              : mode.id === "creator"
+              ? "Coworking spaces, agencies, creative hubs - best for influencer partnerships and B2B"
+              : mode.id === "guerrilla"
+              ? "High-visibility venues, schools, galleries - prime spots for unconventional activations"
+              : "Out-of-home media surfaces - transit posters, street furniture, bridge banners";
             return (
               <button
                 key={mode.id}
                 className={`mode-pill${isActive ? " active" : ""}`}
                 onClick={() => onModeChange(mode.id)}
+                title={modeDescription}
                 type="button"
               >
                 {shortLabel}
@@ -113,6 +123,17 @@ export function Controls({
             );
           })}
           </div>
+          <p className="mode-description">
+            {activeMode === "cultural"
+              ? "Art galleries, creative agencies, cultural venues - ideal for brand positioning near cultural hotspots"
+              : activeMode === "retail"
+              ? "Retail density, shopping areas, footfall zones - optimal for product launches and direct sales"
+              : activeMode === "creator"
+              ? "Coworking spaces, agencies, creative hubs - best for influencer partnerships and B2B"
+              : activeMode === "guerrilla"
+              ? "High-visibility venues, schools, galleries - prime spots for unconventional activations"
+              : "Out-of-home media surfaces - transit posters, street furniture, bridge banners"}
+          </p>
         </div>
       </section>
 
@@ -161,7 +182,7 @@ export function Controls({
                   </div>
                   <span className={`layer-label ${style.labelClass}`}>{layer.label}</span>
                 </div>
-                <span className="layer-count">{String(locations[layer.id].length).padStart(2, "0")}</span>
+                <span className="layer-count">{String(locations[layer.id]?.length ?? 0).padStart(2, "0")}</span>
               </label>
             );
           })}
@@ -194,7 +215,7 @@ export function Controls({
               {areOohLayersEnabled ? "Hide all" : "Show all"}
             </button>
             <span className="section-node-count">
-              {String(oohLayers.reduce((sum, layer) => sum + locations[layer.id].length, 0)).padStart(5, "0")} SURFACES
+              {String(oohLayers.reduce((sum, layer) => sum + (locations[layer.id]?.length ?? 0), 0)).padStart(5, "0")} SURFACES
             </span>
           </div>
         </div>
@@ -216,7 +237,7 @@ export function Controls({
                     </div>
                     <span className="layer-label">{layer.label}</span>
                   </div>
-                  <span className="layer-count">{String(locations[layer.id].length).padStart(4, "0")}</span>
+                  <span className="layer-count">{String(locations[layer.id]?.length ?? 0).padStart(4, "0")}</span>
                 </label>
               );
             })}

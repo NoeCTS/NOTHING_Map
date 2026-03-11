@@ -84,6 +84,74 @@ function getDefaultLayers(marketCode: string): Record<LocationCategory, boolean>
   return marketCode === "BER" ? ALL_LAYERS_ON : LONDON_DEFAULT_LAYERS;
 }
 
+const MODE_LAYER_PRESETS: Record<ModeId, Record<LocationCategory, boolean>> = {
+  cultural: {
+    retail: false,
+    galleries: true,
+    agencies: true,
+    coworking: true,
+    venues: true,
+    schools: true,
+    competitors: true,
+    ubahn_poster: true,
+    ubahn_special: true,
+    bridge_banner: true,
+    street_furniture: true,
+  },
+  retail: {
+    retail: true,
+    galleries: true,
+    agencies: false,
+    coworking: false,
+    venues: true,
+    schools: false,
+    competitors: true,
+    ubahn_poster: true,
+    ubahn_special: false,
+    bridge_banner: true,
+    street_furniture: true,
+  },
+  creator: {
+    retail: false,
+    galleries: true,
+    agencies: true,
+    coworking: true,
+    venues: false,
+    schools: false,
+    competitors: true,
+    ubahn_poster: true,
+    ubahn_special: true,
+    bridge_banner: true,
+    street_furniture: true,
+  },
+  guerrilla: {
+    retail: true,
+    galleries: true,
+    agencies: true,
+    coworking: true,
+    venues: true,
+    schools: true,
+    competitors: true,
+    ubahn_poster: true,
+    ubahn_special: true,
+    bridge_banner: true,
+    street_furniture: true,
+  },
+  ooh: {
+    retail: false,
+    galleries: false,
+    agencies: false,
+    coworking: false,
+    venues: false,
+    schools: false,
+    competitors: false,
+    ubahn_poster: true,
+    ubahn_special: true,
+    bridge_banner: true,
+    street_furniture: true,
+  },
+};
+
 export function GroundSignalApp({
   market,
 }: GroundSignalAppProps) {
@@ -306,6 +374,7 @@ export function GroundSignalApp({
           onModeChange={(mode) => {
             startTransition(() => {
               setActiveMode(mode);
+              setVisibleLayers(MODE_LAYER_PRESETS[mode]);
             });
           }}
           onToggleGapAnalysis={() => setGapAnalysisEnabled((current) => !current)}
@@ -347,12 +416,6 @@ export function GroundSignalApp({
           markersVisible={markersVisible}
           neighbourhoods={ranked}
           computedRoute={computedRoute}
-          onSelectZone={setSelectedZoneName}
-          radiusOverlay={radiusOverlay}
-          routeLoading={routeLoading}
-          routePlannerEnabled={routePlannerEnabled}
-          routeSummary={routeSummary}
-          routeWaypoints={routeWaypoints}
           onAddWaypoint={(waypoint) => {
             setRouteWaypoints((current) => {
               const exists = current.some((w) => w.id === waypoint.id);
@@ -362,6 +425,19 @@ export function GroundSignalApp({
               return [...current, waypoint];
             });
           }}
+          onResetLayers={() => {
+            startTransition(() => {
+              setVisibleLayers(getDefaultLayers(meta.code));
+            });
+          }}
+          onSelectZone={setSelectedZoneName}
+          onToggleHeatmap={() => setHeatmapEnabled((current) => !current)}
+          onToggleRoutePlanner={() => setRoutePlannerEnabled((current) => !current)}
+          radiusOverlay={radiusOverlay}
+          routeLoading={routeLoading}
+          routePlannerEnabled={routePlannerEnabled}
+          routeSummary={routeSummary}
+          routeWaypoints={routeWaypoints}
           visibleLayers={deferredVisibleLayers}
         />
 

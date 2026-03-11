@@ -423,6 +423,14 @@ button {
   color: #ffffff;
 }
 
+.mode-description {
+  color: #737373;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+
 /* ── Layer Toggles ────────────────────────────────── */
 .layer-stack {
   display: flex;
@@ -951,6 +959,71 @@ button {
   height: 20px;
   stroke: currentColor;
   width: 20px;
+}
+
+/* ── Map Quick Actions ───────────────────────────── */
+.map-quick-actions {
+  bottom: 24px;
+  display: flex;
+  gap: 8px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 500;
+}
+
+.quick-action-btn {
+  align-items: center;
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #a3a3a3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 16px;
+  transition: all 0.15s ease;
+}
+
+.quick-action-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.quick-action-btn.active {
+  background: rgba(224, 33, 40, 0.15);
+  border-color: var(--nothing-red);
+  color: var(--nothing-red);
+}
+
+.quick-action-btn svg {
+  fill: none;
+  height: 18px;
+  stroke: currentColor;
+  width: 18px;
+}
+
+.quick-action-btn span {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(224, 33, 40, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px 2px rgba(224, 33, 40, 0.3);
+  }
+}
+
+.quick-action-btn:first-child {
+  animation: subtle-pulse 3s ease-in-out 2;
+  animation-delay: 1s;
 }
 
 /* ── Map Coordinates ──────────────────────────────── */
@@ -1909,6 +1982,15 @@ button {
   margin: 0;
 }
 
+.generate-hint {
+  color: #525252;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
 /* ── Generate Button ──────────────────────────────── */
 .btn-generate {
   background: #ffffff;
@@ -2321,6 +2403,11 @@ button {
     padding: 8px 10px;
   }
 
+  .mode-description {
+    font-size: 0.64rem;
+    margin-top: 8px;
+  }
+
   .layer-stack {
     gap: 6px;
   }
@@ -2399,6 +2486,24 @@ button {
 
   .route-map-copy {
     font-size: 0.66rem;
+  }
+
+  .map-quick-actions {
+    bottom: 12px;
+    gap: 6px;
+  }
+
+  .quick-action-btn {
+    padding: 8px 12px;
+  }
+
+  .quick-action-btn svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .quick-action-btn span {
+    font-size: 0.5rem;
   }
 
   /* Mobile Recommendations Panel */
@@ -2610,6 +2715,10 @@ button {
     padding: 7px 8px;
   }
 
+  .mode-description {
+    font-size: 0.6rem;
+  }
+
   .map-panel {
     height: 50vh;
     height: 50dvh;
@@ -2623,6 +2732,25 @@ button {
 
   .map-title {
     font-size: 0.82rem;
+  }
+
+  .map-quick-actions {
+    bottom: 8px;
+    gap: 4px;
+  }
+
+  .quick-action-btn {
+    padding: 6px 10px;
+    gap: 2px;
+  }
+
+  .quick-action-btn svg {
+    height: 14px;
+    width: 14px;
+  }
+
+  .quick-action-btn span {
+    font-size: 0.45rem;
   }
 
   .zone-detail {

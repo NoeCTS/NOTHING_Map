@@ -11,7 +11,7 @@ export default function NotFound() {
           padding: "40px",
         }}
       >
-        <p className="topbar-tagline">Nothing Ground Signal</p>
+        <p className="topbar-tagline">Ground Signal</p>
         <h1
           className="hero-title"
           style={{

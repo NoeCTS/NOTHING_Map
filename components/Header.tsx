@@ -20,10 +20,10 @@ export function Header({ market }: HeaderProps) {
           </span>
         </button>
 
-        <div className="brand-lockup" aria-label="Nothing Ground Signal">
-          <span className="brand-heavy">Nothing</span>
+        <div className="brand-lockup" aria-label="Ground Signal">
+          <span className="brand-heavy">Ground</span>
           <span className="brand-dot" aria-hidden="true" />
-          <span className="brand-light">Ground Signal</span>
+          <span className="brand-light">Signal</span>
         </div>
       </div>
 

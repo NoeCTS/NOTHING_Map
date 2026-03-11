@@ -355,8 +355,14 @@ export function Recommendations({
 
             <p className="zone-description">{selectedZone.description}</p>
 
+            {!recommendation && (
+              <p className="generate-hint">
+                Get activation strategy, KPIs, and tactical recommendations for this zone
+              </p>
+            )}
+
             <button className="btn-generate" onClick={onGenerate} type="button">
-              Generate Report
+              {recommendation ? "Regenerate Report" : "Generate Report"}
             </button>
 
             {recommendation ? (

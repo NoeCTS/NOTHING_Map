@@ -59,9 +59,646 @@
     {
       "name": "Nothing Store Soho",
       "lat": 51.512903,
-      "lng": -0.134006,
-      "area": "West End",
-      "type": "nothing_store"
+      "lng": -0.134007,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Tottenham Hale",
+      "lat": 51.587341,
+      "lng": -0.062003,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Stratford Westfield",
+      "lat": 51.54349,
+      "lng": -0.006607,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Stratford Centre",
+      "lat": 51.541599,
+      "lng": -0.000709,
+      "area": "Stratford",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - O2 At The O2",
+      "lat": 51.503229,
+      "lng": 0.003601,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Westfield White City",
+      "lat": 51.50694,
+      "lng": -0.222105,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Tottenham Court Road",
+      "lat": 51.51911,
+      "lng": -0.13249,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - The Strand",
+      "lat": 51.509627,
+      "lng": -0.122956,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Kings Road",
+      "lat": 51.4892,
+      "lng": -0.16499,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Kensington High St",
+      "lat": 51.500413,
+      "lng": -0.194158,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Holloway Road",
+      "lat": 51.557463,
+      "lng": -0.118216,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Lewisham",
+      "lat": 51.461883,
+      "lng": -0.012091,
+      "area": "Lewisham",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Chiswick",
+      "lat": 51.492643,
+      "lng": -0.262348,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Islington",
+      "lat": 51.533816,
+      "lng": -0.105809,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop Ilford",
+      "lat": 51.55967,
+      "lng": 0.0723,
+      "area": "Ilford",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop Hounslow",
+      "lat": 51.46898,
+      "lng": -0.36239,
+      "area": "Hounslow",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop Harrow",
+      "lat": 51.581538,
+      "lng": -0.335729,
+      "area": "Harrow",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Hammersmith",
+      "lat": 51.492585,
+      "lng": -0.22739,
+      "area": "Hammersmith",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Fulham Broadway",
+      "lat": 51.480529,
+      "lng": -0.194474,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop Enfield",
+      "lat": 51.651202,
+      "lng": -0.083557,
+      "area": "Enfield",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Eltham",
+      "lat": 51.450608,
+      "lng": 0.056383,
+      "area": "Eltham",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop Edgware",
+      "lat": 51.612716,
+      "lng": -0.274848,
+      "area": "Edgware",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Ealing",
+      "lat": 51.512649,
+      "lng": -0.302995,
+      "area": "Ealing",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Colliers Wood",
+      "lat": 51.413906,
+      "lng": -0.177151,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Brixton",
+      "lat": 51.462608,
+      "lng": -0.114705,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Brent Cross",
+      "lat": 51.57642,
+      "lng": -0.22379,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Wandsworth",
+      "lat": 51.454743,
+      "lng": -0.19391,
+      "area": "Wandsworth",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "O2 Shop London - Walthamstow",
+      "lat": 51.583341,
+      "lng": -0.023677,
+      "area": "Walthamstow",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Barbican",
+      "lat": 51.520795,
+      "lng": -0.089018,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Oxford Street",
+      "lat": 51.516149,
+      "lng": -0.135038,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Tottenham Court Road",
+      "lat": 51.524125,
+      "lng": -0.137216,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Kensington",
+      "lat": 51.502204,
+      "lng": -0.189145,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys White City Westfield",
+      "lat": 51.5101,
+      "lng": -0.22172,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Mile End Road",
+      "lat": 51.521427,
+      "lng": -0.050953,
+      "area": "Stepney",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Canary Wharf",
+      "lat": 51.504685,
+      "lng": -0.017888,
+      "area": "Canary Wharf",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Old Kent Road",
+      "lat": 51.483886,
+      "lng": -0.064895,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Leyton",
+      "lat": 51.555657,
+      "lng": -0.008414,
+      "area": "Leyton",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Colliers Wood",
+      "lat": 51.416467,
+      "lng": -0.179721,
+      "area": "Colliers Wood",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Tottenham Hale",
+      "lat": 51.587341,
+      "lng": -0.062003,
+      "area": "Tottenham Hale",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Wembley Stadium",
+      "lat": 51.561403,
+      "lng": -0.281169,
+      "area": "Wembley",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Brentford",
+      "lat": 51.485695,
+      "lng": -0.321842,
+      "area": "Brentford",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Staples Corner",
+      "lat": 51.569434,
+      "lng": -0.228671,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Hanworth",
+      "lat": 51.43646,
+      "lng": -0.38119,
+      "area": "Hanworth",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Brixton",
+      "lat": 51.457833,
+      "lng": -0.11413,
+      "area": "Brixton",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Charlton",
+      "lat": 51.489397,
+      "lng": 0.033811,
+      "area": "Charlton",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Beckton",
+      "lat": 51.52288,
+      "lng": 0.069991,
+      "area": "Beckton",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Sydenham",
+      "lat": 51.431906,
+      "lng": -0.031997,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Currys Chadwell Heath",
+      "lat": 51.567679,
+      "lng": 0.1171,
+      "area": "Chadwell Heath",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "John Lewis White City",
+      "lat": 51.51039,
+      "lng": -0.22237,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "John Lewis Canary Wharf",
+      "lat": 51.504643,
+      "lng": -0.017134,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "John Lewis Brent Cross",
+      "lat": 51.57681,
+      "lng": -0.22408,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "John Lewis - Peter Jones & Partners",
+      "lat": 51.492277,
+      "lng": -0.158946,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "John Lewis Stratford City",
+      "lat": 51.543434,
+      "lng": -0.007121,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "John Lewis Kingston",
+      "lat": 51.411554,
+      "lng": -0.306723,
+      "area": "Kingston upon Thames",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos Tottenham Court Road",
+      "lat": 51.519909,
+      "lng": -0.13327,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos Balham",
+      "lat": 51.439404,
+      "lng": -0.155375,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Balham Sainsbury's Argos Collection Point",
+      "lat": 51.443681,
+      "lng": -0.152195,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Camberwell Road Sainsbury's Argos Collection Point",
+      "lat": 51.479567,
+      "lng": -0.094444,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Camden Argos (Inside Sainsbury's)",
+      "lat": 51.540254,
+      "lng": -0.141011,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Charlton Riverside Argos (Inside Sainsbury's)",
+      "lat": 51.488286,
+      "lng": 0.026357,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Cromwell Road Argos (Inside Sainsbury's)",
+      "lat": 51.495466,
+      "lng": -0.188354,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Dalston Argos (Inside Sainsbury's)",
+      "lat": 51.547658,
+      "lng": -0.073863,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Fetter Lane Collection Point",
+      "lat": 51.517587,
+      "lng": -0.10876,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Finchley Road Argos (Inside Sainsbury's)",
+      "lat": 51.547953,
+      "lng": -0.181977,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Hammersmith Broadway Sainsbury's Argos Collection Point",
+      "lat": 51.491974,
+      "lng": -0.223652,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Harringay Argos (Inside Sainsbury's)",
+      "lat": 51.577207,
+      "lng": -0.095251,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Islington Argos",
+      "lat": 51.53395,
+      "lng": -0.107375,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Kensington Church Street Collection Point",
+      "lat": 51.504053,
+      "lng": -0.192788,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Kilburn Argos",
+      "lat": 51.538889,
+      "lng": -0.195043,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Ladbroke Grove Argos (Inside Sainsbury's)",
+      "lat": 51.526296,
+      "lng": -0.217664,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Leicester Square Sainsbury's Argos Collection Point",
+      "lat": 51.512054,
+      "lng": -0.128611,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Leytonstone Argos",
+      "lat": 51.567915,
+      "lng": 0.010591,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Limehouse Commercial Road Collection Point",
+      "lat": 51.512945,
+      "lng": -0.042856,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - London Charterhouse Street Collection Point",
+      "lat": 51.519636,
+      "lng": -0.102359,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - London Clerkenwell Road Collection Point",
+      "lat": 51.522191,
+      "lng": -0.109936,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - London Queensway Collection Point",
+      "lat": 51.511902,
+      "lng": -0.187857,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Mansion House Sainsbury's Argos Collection Point",
+      "lat": 51.512167,
+      "lng": -0.094029,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Mile End Station Sainsbury's Argos Collection Point",
+      "lat": 51.525292,
+      "lng": -0.034494,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Nine Elms Argos (Inside Sainsbury's)",
+      "lat": 51.480378,
+      "lng": -0.128318,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Old Kent Road Argos",
+      "lat": 51.488462,
+      "lng": -0.074801,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Old Street Argos",
+      "lat": 51.52566,
+      "lng": -0.09052,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Sheldon Square Collection Point",
+      "lat": 51.519336,
+      "lng": -0.180157,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Shepherd's Bush Sainsbury's Argos Collection Point",
+      "lat": 51.505058,
+      "lng": -0.223276,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Shepherds Bush West 12 Collection Point",
+      "lat": 51.503574,
+      "lng": -0.218704,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Stockwell Station Sainsbury's Argos Collection Point",
+      "lat": 51.472762,
+      "lng": -0.122824,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Stratford Argos",
+      "lat": 51.54165,
+      "lng": 0.001302,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Walthamstow High Street Argos (Inside Sainsbury's)",
+      "lat": 51.582721,
+      "lng": -0.027878,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Westbourne Grove Collection Point",
+      "lat": 51.515348,
+      "lng": -0.193355,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Westfield Stratford Argos",
+      "lat": 51.543537,
+      "lng": -0.006827,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Westminster Rochester Row Collection Point",
+      "lat": 51.495422,
+      "lng": -0.136136,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Argos - Westminster the Strand Collection Point",
+      "lat": 51.508837,
+      "lng": -0.124535,
+      "area": "London",
+      "type": "electronics_retailer"
+    },
+    {
+      "name": "Whitechapel Argos (Inside Sainsbury's)",
+      "lat": 51.52084,
+      "lng": -0.058371,
+      "area": "London",
+      "type": "electronics_retailer"
     }
   ],
   "galleries": [
@@ -12461,71 +13098,6 @@
       "lat": 51.5008,
       "lng": -0.1775,
       "area": "West End"
-    }
-  ],
-  "competitors": [
-    {
-      "name": "Apple Regent Street",
-      "lat": 51.5108,
-      "lng": -0.1398,
-      "area": "West End",
-      "type": "apple"
-    },
-    {
-      "name": "Apple Covent Garden",
-      "lat": 51.5117,
-      "lng": -0.1244,
-      "area": "West End",
-      "type": "apple"
-    },
-    {
-      "name": "Apple Battersea Power Station",
-      "lat": 51.4799,
-      "lng": -0.1432,
-      "area": "South Bank",
-      "type": "apple"
-    },
-    {
-      "name": "Apple Brompton Road",
-      "lat": 51.4968,
-      "lng": -0.1692,
-      "area": "West End",
-      "type": "apple"
-    },
-    {
-      "name": "Apple Stratford City",
-      "lat": 51.5434,
-      "lng": -0.0064,
-      "area": "Stratford",
-      "type": "apple"
-    },
-    {
-      "name": "Samsung Experience Store Westfield",
-      "lat": 51.5072,
-      "lng": -0.2202,
-      "area": "West End",
-      "type": "samsung"
-    },
-    {
-      "name": "Samsung KX Kings Cross",
-      "lat": 51.5359,
-      "lng": -0.1262,
-      "area": "King's Cross",
-      "type": "samsung"
-    },
-    {
-      "name": "Google Store London",
-      "lat": 51.5117,
-      "lng": -0.1244,
-      "area": "West End",
-      "type": "google"
-    },
-    {
-      "name": "OnePlus Selfridges",
-      "lat": 51.5145,
-      "lng": -0.1528,
-      "area": "West End",
-      "type": "oneplus"
     }
   ]
 }

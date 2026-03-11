@@ -117,7 +117,7 @@ export function analyzeRouteOohCorridor(
   const hits: RouteOohEncounter[] = [];
   const counts: Partial<Record<OOHCategory, number>> = {};
 
-  ROUTE_OOH_CATEGORIES.filter((category) => visibleLayers[category]).forEach((category) => {
+  ROUTE_OOH_CATEGORIES.filter((category) => visibleLayers[category] && locations[category]).forEach((category) => {
     locations[category].forEach((point) => {
       let nearestLegIndex = -1;
       let nearestDistance = Infinity;

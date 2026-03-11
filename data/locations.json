@@ -1230,35 +1230,5 @@
       "lng": 13.389,
       "area": "Mitte"
     }
-  ],
-  "competitors": [
-    {
-      "name": "Apple Store Kurfürstendamm",
-      "lat": 52.5025,
-      "lng": 13.3285,
-      "area": "Charlottenburg",
-      "type": "apple"
-    },
-    {
-      "name": "Samsung KaDeWe",
-      "lat": 52.5019,
-      "lng": 13.3417,
-      "area": "Charlottenburg",
-      "type": "samsung"
-    },
-    {
-      "name": "Samsung Alexa",
-      "lat": 52.5115,
-      "lng": 13.4186,
-      "area": "Mitte",
-      "type": "samsung"
-    },
-    {
-      "name": "Google Store Berlin",
-      "lat": 52.5094,
-      "lng": 13.3765,
-      "area": "Mitte",
-      "type": "google"
-    }
   ]
 }

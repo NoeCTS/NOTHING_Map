@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nothing Ground Signal",
+  title: "Ground Signal",
   description: "Location intelligence for market entry.",
 };
 

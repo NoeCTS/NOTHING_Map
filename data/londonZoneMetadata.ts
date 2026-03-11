@@ -212,16 +212,16 @@ export const DATA_SOURCE_META: Record<
     confidence: "medium",
     note: "Billboards, hoardings, and banner wraps used as the large-format corridor layer."
   },
+  competitors: {
+    source: "Nothing store intelligence / competitor retail mapping",
+    updatedAt: "2026-03-10",
+    confidence: "high",
+    note: "Key competitor flagship and retail locations across London zones."
+  },
   street_furniture: {
     source: "London OOH proxy workbook / kiosk, totem, and street-furniture formats",
     updatedAt: "2026-03-10",
     confidence: "medium",
     note: "Street-level OOH proxy focused on kiosks, phone hubs, totems, and signage surfaces."
-  },
-  competitors: {
-    source: "Manual competitor store mapping",
-    updatedAt: "2026-03-10",
-    confidence: "high",
-    note: "Apple, Samsung, Google, and OnePlus flagship store locations in London."
   }
 };

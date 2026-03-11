@@ -134,16 +134,16 @@ export const DATA_SOURCE_META: Record<
     confidence: "medium",
     note: "Low-count corridor inventory with flat exposure defaults by format.",
   },
+  competitors: {
+    source: "Nothing store intelligence / competitor retail mapping",
+    updatedAt: DATA_REFRESH_DATE,
+    confidence: "high",
+    note: "Key competitor flagship and retail locations across Berlin zones.",
+  },
   street_furniture: {
     source: "OOH inventory import / street furniture surfaces",
     updatedAt: DATA_REFRESH_DATE,
     confidence: "medium",
     note: "Inventory weighted with default street-level exposure when station mapping is unavailable.",
-  },
-  competitors: {
-    source: "Manual competitor store mapping",
-    updatedAt: DATA_REFRESH_DATE,
-    confidence: "high",
-    note: "Apple, Samsung, and Google flagship store locations in the Berlin market.",
   },
 };
